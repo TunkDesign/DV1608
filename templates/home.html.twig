@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hem{% endblock %}
+
+{% block body %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <img src="{{ asset('images/linnea.png') }}" alt="Linnea Nyström" class="profile-img">
+      <div class="text-content">
+        <h1>Linnea Nyström</h1>
+        <p class="subtitle">Digital Strateg & Kreativ Visionär</p>
+        <p class="bio">
+          Jag brinner för innovation, användarupplevelse och hållbara lösningar i den digitala världen.
+          Med en bakgrund inom design, strategi och teknik skapar jag upplevelser som gör skillnad.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="container">
+    <h2>Om mig</h2>
+    <p>
+      Med över 10 års erfarenhet inom digital kommunikation har jag hjälpt företag att växa genom
+      smarta, användarcentrerade lösningar. Min styrka ligger i att kombinera estetik med strategi.
+    </p>
+  </div>
+</section>
+{% endblock %}

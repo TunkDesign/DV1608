@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="sv">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome!{% endblock %} | Linnea Nyström</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+            <div class="container">
+                <a href="{{ path('home') }}" class="logo">Linnea</a>
+                <ul class="nav-links">
+                    <li><a href="{{ path('home') }}" class="{% if 'home' in app.request.attributes.get('_route') %}active{% endif %}">Hem</a></li>
+                    <li><a href="{{ path('about') }}" class="{% if 'about' in app.request.attributes.get('_route') %}active{% endif %}">Om Kursen</a></li>
+                    <li><a href="{{ path('report') }}" class="{% if 'report' in app.request.attributes.get('_route') %}active{% endif %}">Redovisning</a></li>
+                    <li><a href="{{ path('lucky') }}" class="{% if 'lucky' in app.request.attributes.get('_route') %}active{% endif %}">Lycka</a></li>
+                </ul>
+            </div>
+            </nav>
+        </header>
+        
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer>
+          <div class="container">
+            <p>&copy; {{ "now"|date("Y") }} Linnea Nyström. Alla rättigheter förbehållna.</p>
+          </div>
+        </footer>
+    </body>
+</html>

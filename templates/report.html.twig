@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Redovisningar{% endblock %}
+
+{% block body %}
+<section class="report-page">
+  <div class="container">
+    <h1>Redovisning</h1>
+    <p>Här samlar jag mina reflektioner och redovisningstexter för varje kursmoment i MVC-kursen.</p>
+
+    <nav class="report-nav">
+      <a href="#kmom01">kmom01</a>
+      <a href="#kmom02">kmom02</a>
+      <a href="#kmom03">kmom03</a>
+      <a href="#kmom04">kmom04</a>
+      <!-- Lägg till fler vid behov -->
+    </nav>
+
+    <article id="kmom01" class="report-section">
+      <h2>kmom01</h2>
+      <p>
+        Redovisningstext för kmom01. Här reflekterar jag över arbetet med att sätta upp strukturen
+        för projektet, installera Symfony och grunderna i ramverkets uppbyggnad.
+      </p>
+    </article>
+
+    <article id="kmom02" class="report-section">
+      <h2>kmom02</h2>
+      <p>
+        Reflektioner från kmom02. Här arbetade jag med routing, controllers och började skapa
+        dynamiska sidor med Twig.
+      </p>
+    </article>
+
+    <article id="kmom03" class="report-section">
+      <h2>kmom03</h2>
+      <p>
+        Rapporttext för kmom03. Fokus låg på databashantering och ORM. Jag integrerade Doctrine
+        och skapade entiteter.
+      </p>
+    </article>
+
+    <article id="kmom04" class="report-section">
+      <h2>kmom04</h2>
+      <p>
+        Här beskriver jag mina erfarenheter från att implementera forms och validering, samt hur
+        användarinmatning hanteras i Symfony.
+      </p>
+    </article>
+  </div>
+</section>
+{% endblock %}

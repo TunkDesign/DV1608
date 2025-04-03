@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Om Kursen{% endblock %}
+
+{% block body %}
+<section class="about-course">
+  <div class="container two-columns">
+    <div class="text-column">
+      <h1>Om Kursen: MVC</h1>
+      <p>
+        Den här kursen introducerar dig till konceptet <strong>Model-View-Controller</strong> (MVC), ett arkitekturmönster
+        som används flitigt inom modern webbutveckling. Syftet är att lära sig strukturera kod på ett logiskt och återanvändbart sätt.
+      </p>
+      <p>
+        Du får praktisk erfarenhet av att bygga applikationer med hjälp av PHP, routing, templates (Twig), och databaskopplingar.
+        Allt detta sker i ett eget micro-framework där du själv får kontroll över arkitekturen.
+      </p>
+
+      <ul class="links">
+        <li><a href="https://github.com/dbwebb-se/mvc/tree/main" target="_blank">📘 Kursens GitHub-repo</a></li>
+        <li><a href="https://github.com/TunkDesign/DV1608" target="_blank">🛠️ Mitt eget GitHub-repo för kursen</a></li>
+      </ul>
+    </div>
+
+    <div class="image-column">
+      <img src="{{ asset('images/mvc-diagram.png') }}" alt="MVC-diagram" class="responsive-img">
+    </div>
+  </div>
+</section>
+{% endblock %}

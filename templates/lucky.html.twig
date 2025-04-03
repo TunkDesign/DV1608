@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Lucky{% endblock %}
+
+{% block body %}
+<section class="lucky-fortune">
+  <div class="container">
+    <h2>Dagens lyckoföremål ✨</h2>
+    <div class="fortune-box">
+      <div class="fortune-text">
+        {{ luckyThing }}
+      </div>
+      {% if imageUrl %}
+        <img src="{{ asset(imageUrl) }}" alt="Lyckobild" class="fortune-img">
+      {% endif %}
+    </div>
+    <div class="reload">
+      <a href="{{ path('lucky') }}">Testa lyckan igen 🎲</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

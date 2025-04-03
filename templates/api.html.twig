@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API-dokumentation</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('api') }}
+        {% endblock %}
+
+    </head>
+    <body>
+        <div class="container">
+            <h1>API-dokumentation</h1>
+            <p class="lead">Här är en översikt av alla JSON-routes som webbplatsen erbjuder.</p>
+        
+            <div class="grid">
+                {% for route in routes %}
+                <div class="card">
+                    <div>
+                        <div class="card-title">{{ route.title }}</div>
+                        <div class="card-text">{{ route.description }}</div>
+                        <p><strong>Metod:</strong> <span class="badge">{{ route.method }}</span></p>
+                        <p><strong>URL:</strong> <code>{{ route.path }}</code></p>
+                    </div>
+                    {% if route.response %}
+                        <p><strong>Exempelsvar:</strong></p>
+                        <pre><code>{{ route.response }}</code></pre>
+                    {% endif %}
+                    {% if route.example %}
+                        <a class="button" href="{{ route.example }}" target="_blank">Exempel URL</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
