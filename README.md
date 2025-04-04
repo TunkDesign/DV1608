@@ -1,4 +1,4 @@
-![DV1608 Symfony Project](https://i.imgur.com/LWKaxCM.png)
+![DV1608 Symfony Project](https://i.imgur.com/WQiomwj.png)
 
 # DV1608 – Symfony Website
 
