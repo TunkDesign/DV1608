@@ -23,14 +23,14 @@
                         <div class="card-title">{{ route.title }}</div>
                         <div class="card-text">{{ route.description }}</div>
                         <p><strong>Metod:</strong> <span class="badge">{{ route.method }}</span></p>
-                        <p><strong>URL:</strong> <code>{{ route.path }}</code></p>
+                        <p><strong>URL:</strong> <code>{{ path('api') }}{{ route.path }}</code></p>
                     </div>
                     {% if route.response %}
                         <p><strong>Exempelsvar:</strong></p>
                         <pre><code>{{ route.response }}</code></pre>
                     {% endif %}
                     {% if route.example %}
-                        <a class="button" href="{{ route.example }}" target="_blank">Exempel URL</a>
+                        <a class="button" href="{{ path('api') }}{{ route.example }}" target="_blank">Exempel URL</a>
                     {% endif %}
                 </div>
                 {% endfor %}

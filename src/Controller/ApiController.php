@@ -18,8 +18,8 @@ class ApiController extends AbstractController
                 'title' => 'Dagens The Office Citat',
                 'description' => 'Returnerar slumpmässiga citat från den populära humorserien The Office.',
                 'method' => 'GET',
-                'path' => '/api/quote',
-                'example' => '/api/quote',
+                'path' => 'quote',
+                'example' => 'quote',
                 'response' => json_encode([
                     'quote' => "I am not superstitious, but I am a little stitious.",
                     'author' => "Michael Scott",
