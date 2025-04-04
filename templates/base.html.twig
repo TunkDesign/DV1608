@@ -24,6 +24,7 @@
                     <li><a href="{{ path('about') }}" class="{% if 'about' in app.request.attributes.get('_route') %}active{% endif %}">Om Kursen</a></li>
                     <li><a href="{{ path('report') }}" class="{% if 'report' in app.request.attributes.get('_route') %}active{% endif %}">Redovisning</a></li>
                     <li><a href="{{ path('lucky') }}" class="{% if 'lucky' in app.request.attributes.get('_route') %}active{% endif %}">Lycka</a></li>
+                    <li><a href="{{ path('api') }}" class="{% if 'api' in app.request.attributes.get('_route') %}active{% endif %}">API</a></li>
                 </ul>
             </div>
             </nav>
