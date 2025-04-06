@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-
     #[Route('/api/', name: 'api')]
     public function api(): Response
     {
@@ -28,7 +27,7 @@ class ApiController extends AbstractController
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ]
         ];
-        
+
         return $this->render('api.html.twig', [
             'routes' => $routes,
         ]);
@@ -87,7 +86,7 @@ class ApiController extends AbstractController
             'timestamp' => $now->format(\DateTime::ATOM), // ISO 8601
         ]);
 
-        $response->setEncodingOptions( $response->getEncodingOptions() | JSON_PRETTY_PRINT );
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
 
         return $response;
     }

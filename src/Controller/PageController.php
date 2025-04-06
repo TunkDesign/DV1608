@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PageController extends AbstractController
 {
-
     #[Route('/', name: 'home')]
     public function home(): Response
     {
@@ -20,7 +19,7 @@ class PageController extends AbstractController
     {
         return $this->render('about.html.twig');
     }
- 
+
     #[Route('/report', name: 'report')]
     public function report(): Response
     {

@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LuckyController extends AbstractController
 {
-
     #[Route('/lucky', name: 'lucky')]
     public function lucky(): Response
     {
@@ -18,9 +17,9 @@ class LuckyController extends AbstractController
             ['text' => '🍀 Lycko nummer: ' . random_int(1, 99), 'img' => 'images/clover.gif'],
             ['text' => '🌈 Du hittade regnbågen!', 'img' => 'images/rainbow.gif'],
         ];
-    
+
         $fortune = $fortunes[array_rand($fortunes)];
-    
+
         return $this->render('lucky.html.twig', [
             'luckyThing' => $fortune['text'],
             'imageUrl' => $fortune['img'],
