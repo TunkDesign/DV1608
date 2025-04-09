@@ -68,4 +68,35 @@ class CardGameController extends AbstractController
             'deck' => $cards
         ]);
     }
+
+    #[Route('/card/deck/draw', name: 'card_draw')]
+    public function draw(
+        SessionInterface $session
+    ): Response
+    {
+        // Get Deck json data from session.
+        $jsonDeck = $session->get('deck');
+
+        // Init a new Deck based on session.
+        $rawData = json_decode($jsonDeck, true);
+        $deck = new Deck(true, $rawData);
+
+        // Draw a card.
+        $drawn = $deck->draw();
+
+        // Save modified deck to session.
+        $session->set('deck', json_encode($deck));
+
+        /** @var CardGraphic $drawn */
+        // Add the correct name and color.
+        $drawnCards[] = [
+                'name' => $drawn->getAsString(),
+                'color' => $drawn->getColor()
+        ];
+
+        return $this->render('card/draw.html.twig', [
+            'drawn' => $drawnCards,
+            'cards_left' => count($deck->getCards())
+        ]);
+    }
 }
