@@ -141,4 +141,3 @@ class CardGameController extends AbstractController
         ]);
     }
 }
-}
