@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Card\Deck;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,6 +25,59 @@ class ApiController extends AbstractController
                     'author' => "Michael Scott",
                     'date' => date('Y-m-d'),
                     'timestamp' => date(DATE_ATOM),
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ],
+            [
+                'title' => 'Visa kortlek',
+                'description' => 'Returnerar en kortlek sorterad på färg och värde.',
+                'method' => 'GET',
+                'path' => 'deck',
+                'example' => 'deck',
+                'response' => json_encode([
+                    'spades' => [
+                        [
+                            'values' => 1,
+                            'suit' => 'spades',
+                        ],
+                        [
+                            'values' => 2,
+                            'suit' => 'spades',
+                        ],
+                        '..'
+                    ],
+                    'hearts' => [
+                        [
+                            'values' => 1,
+                            'suit' => 'hearts',
+                        ],
+                        [
+                            'values' => 2,
+                            'suit' => 'hearts',
+                        ],
+                        '..'
+                    ],
+                    'diamonds' => [
+                        [
+                            'values' => 1,
+                            'suit' => 'diamonds',
+                        ],
+                        [
+                            'values' => 2,
+                            'suit' => 'diamonds',
+                        ],
+                        '..'
+                    ],
+                    'clubs' => [
+                        [
+                            'values' => 1,
+                            'suit' => 'clubs',
+                        ],
+                        [
+                            'values' => 2,
+                            'suit' => 'clubs',
+                        ],
+                        '..'
+                    ]
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ]
         ];
@@ -84,6 +138,31 @@ class ApiController extends AbstractController
             'author' => $randomQuote['author'],
             'date' => $now->format('Y-m-d'),
             'timestamp' => $now->format(\DateTime::ATOM), // ISO 8601
+        ]);
+
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+
+        return $response;
+    }
+
+    #[Route('/api/deck', name: 'api_deck', methods: ['GET'])]
+    public function deck(): JsonResponse
+    {
+
+        // Init a new Deck
+        $deck = new Deck(true);
+
+        // Save each suit in their own variables.
+        $spades = $deck->getCardsBySuit('spades');
+        $hearts = $deck->getCardsBySuit('hearts');
+        $diamonds = $deck->getCardsBySuit('diamonds');
+        $clubs = $deck->getCardsBySuit('clubs');
+
+        $response = new JsonResponse([
+            'spades' => $spades,
+            'hearts' => $hearts,
+            'diamonds' => $diamonds,
+            'clubs' => $clubs
         ]);
 
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
