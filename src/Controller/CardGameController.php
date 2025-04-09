@@ -40,4 +40,32 @@ class CardGameController extends AbstractController
             'clubs' => $clubs
         ]);
     }
+
+    #[Route('/card/deck/shuffle', name: 'card_shuffle')]
+    public function shuffle(
+        SessionInterface $session
+    ): Response
+    {
+        // Init a new Deck
+        $deck = new Deck(true);
+
+        // Shuffle the deck.
+        $deck->shuffle();
+
+        // Save deck in session
+        $session->set('deck', json_encode($deck));
+
+        $cards = [];
+        // Loop through the deck and assign the correct color.
+        foreach ($deck->getCards() as $card) {
+            $cards[] = [
+                'name' => $card->getAsString(),
+                'color' => $card->getColor()
+            ];
+        }
+
+        return $this->render('card/shuffle.html.twig', [
+            'deck' => $cards
+        ]);
+    }
 }
