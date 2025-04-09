@@ -1,0 +1,27 @@
+{% extends "card/base.html.twig" %}
+
+{% block title %}Shuffle{% endblock %}
+
+{% block body %}
+
+<section class="main">
+  <div class="container">
+    <h2>Shuffle</h2>
+    <p>
+      Here's your shuffled deck of cards!
+    </p>
+  </div>
+</section>
+
+<section class="spades">
+  <div class="container">
+    <h2>Deck of Cards</h2>
+    <p>
+      {% for card in deck %}
+          <span class="card {{ card.color }}">{{ card.name }}</span>
+      {% endfor %}
+    </p>
+  </div>
+</section>
+
+{% endblock %}

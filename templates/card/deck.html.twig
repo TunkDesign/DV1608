@@ -1,0 +1,59 @@
+{% extends "card/base.html.twig" %}
+
+{% block title %}Deck{% endblock %}
+
+{% block body %}
+
+<section class="main">
+  <div class="container">
+    <h2>Deck</h2>
+    <p>
+      Here's all cards we have in our deck of cards!
+    </p>
+  </div>
+</section>
+
+<section class="spades">
+  <div class="container">
+    <h2>Spades</h2>
+    <p>
+      {% for card in spades %}
+          <span class="card">{{ card.getAsString() }}</span>
+      {% endfor %}
+    </p>
+  </div>
+</section>
+
+<section class="hearts">
+  <div class="container">
+    <h2>Hearts</h2>
+    <p>
+      {% for card in hearts %}
+          <span class="card red">{{ card.getAsString() }}</span>
+      {% endfor %}
+    </p>
+  </div>
+</section>
+
+<section class="diamonds">
+  <div class="container">
+    <h2>Diamonds</h2>
+    <p>
+      {% for card in diamonds %}
+          <span class="card red">{{ card.getAsString() }}</span>
+      {% endfor %}
+    </p>
+  </div>
+</section>
+
+<section class="clubds">
+  <div class="container">
+    <h2>Clubs</h2>
+    <p>
+      {% for card in clubs %}
+          <span class="card">{{ card.getAsString() }}</span>
+      {% endfor %}
+    </p>
+  </div>
+</section>
+{% endblock %}

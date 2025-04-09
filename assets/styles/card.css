@@ -1,0 +1,7 @@
+.card {
+    font-size: 200px;
+}
+
+.card.red {
+    color: red;
+}

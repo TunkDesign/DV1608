@@ -1,0 +1,36 @@
+{% extends "card/base.html.twig" %}
+
+{% block title %}Draw{% endblock %}
+
+{% block body %}
+
+<section class="main">
+  <div class="container">
+    <h2>Shuffle</h2>
+    <p>
+      Here's your drawn card!
+    </p>
+  </div>
+</section>
+
+<section class="spades">
+  <div class="container">
+    <h2>Drawn card!</h2>
+    <p>
+      {% for card in drawn %}
+          <span class="card {{ card.color }}">{{ card.name }}</span>
+      {% endfor %}
+    </p>
+  </div>
+</section>
+
+<section class="spades">
+  <div class="container">
+    <h2>Cards left in the deck</h2>
+    <p>
+        There is {{ cards_left }} cards left in the deck.
+    </p>
+  </div>
+</section>
+
+{% endblock %}

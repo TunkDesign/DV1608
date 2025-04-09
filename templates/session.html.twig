@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hem{% endblock %}
+
+{% block body %}
+<section class="about">
+  <div class="container">
+    <h2>Session Data</h2>
+    <ul>
+      {% for ln in session %}
+          <li>{{ ln }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}
