@@ -99,4 +99,46 @@ class CardGameController extends AbstractController
             'cards_left' => count($deck->getCards())
         ]);
     }
+
+    #[Route('/card/deck/draw/{num<\d+>}', name: 'card_draw_number')]
+    public function drawNumber(int $num,
+        SessionInterface $session
+    ): Response
+    {
+        if ($num > 52) {
+            throw new \Exception('Can not draw more cards than the deck contains!');
+        }
+
+        // Get deck json data from session.
+        $jsonDeck = $session->get('deck');
+
+        // Init a new deck based on session.
+        $rawData = json_decode($jsonDeck, true);
+        $deck = new Deck(true, $rawData);
+
+        // Loop through and draw a card for each specified number.
+        $drawnCards = [];
+        for ($i = 0; $i < $num; $i++) {
+            $card = $deck->draw();
+
+            /** @var CardGraphic $card */
+            if ($card) {
+                $drawnCards[] = [
+                    'name' => $card->getAsString(),
+                    'color' => $card->getColor()
+                ];
+            } else {
+                break; 
+            }
+        }
+
+        // Save the modified deck to session.
+        $session->set('deck', json_encode($deck));
+
+        return $this->render('card/draw.html.twig', [
+            'drawn' => $drawnCards,
+            'cards_left' => count($deck->getCards())
+        ]);
+    }
+}
 }
