@@ -19,4 +19,25 @@ class CardGameController extends AbstractController
     {
         return $this->render('card/home.html.twig');
     }
+
+    #[Route('/card/deck', name: 'card_deck')]
+    public function deck(): Response
+    {
+
+        // Init a new Deck
+        $deck = new Deck(true);
+
+        // Save each suit in their own variables.
+        $spades = $deck->getCardsBySuit('spades');
+        $hearts = $deck->getCardsBySuit('hearts');
+        $diamonds = $deck->getCardsBySuit('diamonds');
+        $clubs = $deck->getCardsBySuit('clubs');
+
+        return $this->render('card/deck.html.twig', [
+            'spades' => $spades,
+            'hearts' => $hearts,
+            'diamonds' => $diamonds,
+            'clubs' => $clubs
+        ]);
+    }
 }
