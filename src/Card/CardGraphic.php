@@ -28,7 +28,7 @@ class CardGraphic extends Card implements \JsonSerializable
     {
         return $this->representations[$this->suit][$this->value - 1] ?? '[Invalid card]';
     }
-    
+
 
     public function getColor(): string
     {

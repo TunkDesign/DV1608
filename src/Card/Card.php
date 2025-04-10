@@ -12,7 +12,7 @@ class Card
         $this->value = $value;
         $this->suit = $suit;
     }
-    
+
     public function getValue(): int
     {
         return $this->value;

@@ -11,9 +11,9 @@ class Dice
         $this->value = null;
     }
 
-    public function roll() : int
+    public function roll(): int
     {
-        $this->value = random_int(1,6);
+        $this->value = random_int(1, 6);
         return $this->value;
     }
 

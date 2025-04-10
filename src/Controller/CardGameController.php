@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CardGameController extends AbstractController
 {
-
     #[Route('/card', name: 'card_start')]
     public function home(): Response
     {
@@ -44,8 +43,7 @@ class CardGameController extends AbstractController
     #[Route('/card/deck/shuffle', name: 'card_shuffle')]
     public function shuffle(
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
         // Init a new Deck
         $deck = new Deck(true);
 
@@ -72,8 +70,7 @@ class CardGameController extends AbstractController
     #[Route('/card/deck/draw', name: 'card_draw')]
     public function draw(
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
         // Get Deck json data from session.
         $jsonDeck = $session->get('deck');
 
@@ -101,10 +98,10 @@ class CardGameController extends AbstractController
     }
 
     #[Route('/card/deck/draw/{num<\d+>}', name: 'card_draw_number')]
-    public function drawNumber(int $num,
+    public function drawNumber(
+        int $num,
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
         if ($num > 52) {
             throw new \Exception('Can not draw more cards than the deck contains!');
         }
@@ -128,7 +125,7 @@ class CardGameController extends AbstractController
                     'color' => $card->getColor()
                 ];
             } else {
-                break; 
+                break;
             }
         }
 

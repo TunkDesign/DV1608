@@ -44,7 +44,7 @@ class Deck implements \JsonSerializable
     {
         return array_filter(
             $this->cards,
-            fn($card) => $card->getSuit() === $suit
+            fn ($card) => $card->getSuit() === $suit
         );
     }
 
@@ -57,7 +57,7 @@ class Deck implements \JsonSerializable
     {
         return array_shift($this->cards);
     }
-    
+
     public function jsonSerialize(): mixed
     {
         return $this->cards;

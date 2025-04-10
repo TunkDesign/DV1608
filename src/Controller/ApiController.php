@@ -228,8 +228,7 @@ class ApiController extends AbstractController
     #[Route('/api/deck/shuffle', name: 'api_deck_suffle')]
     public function deck_shuffle(
         SessionInterface $session
-    ): JsonResponse
-    {
+    ): JsonResponse {
 
         // Init a new Deck
         $deck = new Deck(true);
@@ -259,8 +258,7 @@ class ApiController extends AbstractController
     #[Route('/api/deck/draw', name: 'api_deck_draw')]
     public function deck_draw(
         SessionInterface $session
-    ): JsonResponse
-    {
+    ): JsonResponse {
         // Get Deck json data from session.
         $jsonDeck = $session->get('deck');
 
@@ -292,10 +290,10 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/deck/draw/{num<\d+>}', name: 'api_deck_draw_number')]
-    public function deck_draw_number(int $num,
+    public function deck_draw_number(
+        int $num,
         SessionInterface $session
-    ): JsonResponse
-    {
+    ): JsonResponse {
         if ($num > 52) {
             throw new \Exception('Can not draw more cards than the deck contains!');
         }
@@ -319,7 +317,7 @@ class ApiController extends AbstractController
                     'color' => $card->getColor()
                 ];
             } else {
-                break; 
+                break;
             }
         }
 
