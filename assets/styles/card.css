@@ -1,7 +1,91 @@
-.card {
-    font-size: 200px;
-}
-
-.card.red {
-    color: red;
-}
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #1f1c2c, #928dab);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+  
+  header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem 0;
+  }
+  
+  .navbar .nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .navbar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .navbar .nav-links a:hover,
+  .navbar .nav-links a.active {
+    background-color: #fff;
+    color: #1f1c2c;
+  }
+  
+  .main,
+  .spades,
+  .hearts,
+  .diamonds,
+  .clubds {
+    padding: 2rem 0;
+  }
+  
+  .main h2,
+  .spades h2,
+  .hearts h2,
+  .diamonds h2,
+  .clubds h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .container {
+    text-align: center;
+    max-width: 850px;
+    margin: auto;
+  }
+  
+  .container p {
+    font-size: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .card {
+    display: inline-block;
+    font-size: 10rem;
+    width: 7rem;
+    height: 10rem;
+    background-color: #fff;
+    color: #000;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    line-height: 9rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: scale(1.1);
+  }
+  
+  .card.red {
+    color: crimson;
+  }
