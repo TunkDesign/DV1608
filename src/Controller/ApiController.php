@@ -6,6 +6,7 @@ use App\Card\Deck;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -78,6 +79,23 @@ class ApiController extends AbstractController
                         ],
                         '..'
                     ]
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ],
+            [
+                'title' => 'Blanda kortlek',
+                'description' => 'Returnerar slumpmässigt blandad kortlek och sparar i session.',
+                'method' => 'GET',
+                'path' => 'deck/shuffle',
+                'example' => 'deck/shuffle',
+                'response' => json_encode([
+                [
+                    'name' => "\ud83c\udcc1",
+                    'color' => 'red'
+                ],
+                [
+                    "name" => "\ud83c\udca6",
+                    "color" => "black"
+                ]
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ]
         ];
@@ -164,6 +182,37 @@ class ApiController extends AbstractController
             'diamonds' => $diamonds,
             'clubs' => $clubs
         ]);
+
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+
+        return $response;
+    }
+
+    #[Route('/api/deck/shuffle', name: 'api_deck_suffle', methods: ['GET'])]
+    public function deck_shuffle(
+        SessionInterface $session
+    ): JsonResponse
+    {
+
+        // Init a new Deck
+        $deck = new Deck(true);
+
+        // Shuffle the deck.
+        $deck->shuffle();
+
+        // Save deck in session
+        $session->set('deck', json_encode($deck));
+
+        $cards = [];
+        // Loop through the deck and assign the correct color.
+        foreach ($deck->getCards() as $card) {
+            $cards[] = [
+                'name' => $card->getAsString(),
+                'color' => $card->getColor()
+            ];
+        }
+
+        $response = new JsonResponse($cards);
 
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
 
