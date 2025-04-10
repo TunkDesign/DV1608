@@ -97,7 +97,21 @@ class ApiController extends AbstractController
                     "color" => "black"
                 ]
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-            ]
+            ],
+            [
+                'title' => 'Dra ett kort',
+                'description' => 'Returnerar ett kort från kortleken och antal kort kvar.',
+                'method' => 'GET',
+                'path' => 'deck/draw',
+                'example' => 'deck/draw',
+                'response' => json_encode([
+                    'drawn' => [[
+                            'name' => "\ud83c\udcaa",
+                            'color' => 'black'
+                    ]],
+                    'cards_left' => 30
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ],
         ];
 
         return $this->render('api.html.twig', [
@@ -213,6 +227,41 @@ class ApiController extends AbstractController
         }
 
         $response = new JsonResponse($cards);
+
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+
+        return $response;
+    }
+
+    #[Route('/api/deck/draw', name: 'api_deck_draw', methods: ['GET'])]
+    public function deck_draw(
+        SessionInterface $session
+    ): JsonResponse
+    {
+        // Get Deck json data from session.
+        $jsonDeck = $session->get('deck');
+
+        // Init a new Deck based on session.
+        $rawData = json_decode($jsonDeck, true);
+        $deck = new Deck(true, $rawData);
+
+        // Draw a card.
+        $drawn = $deck->draw();
+
+        // Save modified deck to session.
+        $session->set('deck', json_encode($deck));
+
+        /** @var CardGraphic $drawn */
+        // Add the correct name and color.
+        $drawnCards[] = [
+            'name' => $drawn->getAsString(),
+            'color' => $drawn->getColor()
+        ];
+
+        $response = new JsonResponse([
+            'drawn' => $drawnCards,
+            'cards_left' => count($deck->getCards())
+        ]);
 
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
 
