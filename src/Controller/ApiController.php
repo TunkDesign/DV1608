@@ -112,6 +112,29 @@ class ApiController extends AbstractController
                     'cards_left' => 30
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ],
+            [
+                'title' => 'Dra flera kort',
+                'description' => 'Returnerar x kort från kortleken och antal kort kvar.',
+                'method' => 'GET',
+                'path' => 'deck/draw/:number:',
+                'example' => 'deck/draw/3',
+                'response' => json_encode([
+                    'drawn' => [[
+                        'name' => "\ud83c\udcd7",
+                        'color' => 'black'
+                    ],
+                    [
+                        'name' => "\ud83c\udcc8",
+                        'color' => 'red'
+                    ],
+                    [
+                        'name' => "\ud83c\udcc9",
+                        'color' => 'red'
+                    ]
+                ],
+                    'cards_left' => 30
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ]
         ];
 
         return $this->render('api.html.twig', [
@@ -119,7 +142,7 @@ class ApiController extends AbstractController
         ]);
     }
 
-    #[Route('/api/quote', name: 'api_quote', methods: ['GET'])]
+    #[Route('/api/quote', name: 'api_quote')]
     public function quote(): JsonResponse
     {
         $quotes = [
@@ -177,7 +200,7 @@ class ApiController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/deck', name: 'api_deck', methods: ['GET'])]
+    #[Route('/api/deck', name: 'api_deck')]
     public function deck(): JsonResponse
     {
 
@@ -202,7 +225,7 @@ class ApiController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/deck/shuffle', name: 'api_deck_suffle', methods: ['GET'])]
+    #[Route('/api/deck/shuffle', name: 'api_deck_suffle')]
     public function deck_shuffle(
         SessionInterface $session
     ): JsonResponse
@@ -233,7 +256,7 @@ class ApiController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/deck/draw', name: 'api_deck_draw', methods: ['GET'])]
+    #[Route('/api/deck/draw', name: 'api_deck_draw')]
     public function deck_draw(
         SessionInterface $session
     ): JsonResponse
@@ -257,6 +280,51 @@ class ApiController extends AbstractController
             'name' => $drawn->getAsString(),
             'color' => $drawn->getColor()
         ];
+
+        $response = new JsonResponse([
+            'drawn' => $drawnCards,
+            'cards_left' => count($deck->getCards())
+        ]);
+
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+
+        return $response;
+    }
+
+    #[Route('/api/deck/draw/{num<\d+>}', name: 'api_deck_draw_number')]
+    public function deck_draw_number(int $num,
+        SessionInterface $session
+    ): JsonResponse
+    {
+        if ($num > 52) {
+            throw new \Exception('Can not draw more cards than the deck contains!');
+        }
+
+        // Get Deck json data from session.
+        $jsonDeck = $session->get('deck');
+
+        // Init a new Deck based on session.
+        $rawData = json_decode($jsonDeck, true);
+        $deck = new Deck(true, $rawData);
+
+        // Loop through and draw a card for each specified number.
+        $drawnCards = [];
+        for ($i = 0; $i < $num; $i++) {
+            $card = $deck->draw();
+
+            /** @var CardGraphic $card */
+            if ($card) {
+                $drawnCards[] = [
+                    'name' => $card->getAsString(),
+                    'color' => $card->getColor()
+                ];
+            } else {
+                break; 
+            }
+        }
+
+        // Save modified deck to session.
+        $session->set('deck', json_encode($deck));
 
         $response = new JsonResponse([
             'drawn' => $drawnCards,
