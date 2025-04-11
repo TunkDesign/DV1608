@@ -88,50 +88,51 @@ class ApiController extends AbstractController
                 'path' => 'deck/shuffle',
                 'example' => 'deck/shuffle',
                 'response' => json_encode([
-                [
-                    'name' => "\ud83c\udcc1",
-                    'color' => 'red'
-                ],
-                [
-                    "name" => "\ud83c\udca6",
-                    "color" => "black"
-                ]
+                    [
+                        'name' => "\ud83c\udcc1",
+                        'color' => 'red'
+                    ],
+                    [
+                        "name" => "\ud83c\udca6",
+                        "color" => "black"
+                    ]
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ],
             [
                 'title' => 'Dra ett kort',
-                'description' => 'Returnerar ett kort från kortleken och antal kort kvar.',
+                'description' => 'Returnerar ett kort från kortleken och antal kort kvar. Om man inte blandar kortleken när kortleken är tom, så drar man ett nytt kort från en sorterad kortlek.',
                 'method' => 'GET',
                 'path' => 'deck/draw',
                 'example' => 'deck/draw',
                 'response' => json_encode([
                     'drawn' => [[
-                            'name' => "\ud83c\udcaa",
-                            'color' => 'black'
+                        'name' => "\ud83c\udcaa",
+                        'color' => 'black'
                     ]],
                     'cards_left' => 30
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ],
             [
                 'title' => 'Dra flera kort',
-                'description' => 'Returnerar x kort från kortleken och antal kort kvar.',
+                'description' => 'Returnerar x kort från kortleken och antal kort kvar. Om man inte blandar kortleken när kortleken är tom, så drar man ett nytt kort från en sorterad kortlek.',
                 'method' => 'GET',
                 'path' => 'deck/draw/:number:',
                 'example' => 'deck/draw/3',
                 'response' => json_encode([
-                    'drawn' => [[
-                        'name' => "\ud83c\udcd7",
-                        'color' => 'black'
+                    'drawn' => [
+                        [
+                            'name' => "\ud83c\udcd7",
+                            'color' => 'black'
+                        ],
+                        [
+                            'name' => "\ud83c\udcc8",
+                            'color' => 'red'
+                        ],
+                        [
+                            'name' => "\ud83c\udcc9",
+                            'color' => 'red'
+                        ]
                     ],
-                    [
-                        'name' => "\ud83c\udcc8",
-                        'color' => 'red'
-                    ],
-                    [
-                        'name' => "\ud83c\udcc9",
-                        'color' => 'red'
-                    ]
-                ],
                     'cards_left' => 30
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ]
@@ -201,17 +202,31 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/deck', name: 'api_deck')]
-    public function deck(): JsonResponse
-    {
+    public function deck(
+        SessionInterface $session
+    ): JsonResponse {
 
-        // Init a new Deck
-        $deck = new Deck(true);
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
+
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
+
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
         // Save each suit in their own variables.
-        $spades = $deck->getCardsBySuit('spades');
-        $hearts = $deck->getCardsBySuit('hearts');
-        $diamonds = $deck->getCardsBySuit('diamonds');
-        $clubs = $deck->getCardsBySuit('clubs');
+        $spades = $deck->getSortedCardsBySuit('spades');
+        $hearts = $deck->getSortedCardsBySuit('hearts');
+        $diamonds = $deck->getSortedCardsBySuit('diamonds');
+        $clubs = $deck->getSortedCardsBySuit('clubs');
 
         $response = new JsonResponse([
             'spades' => $spades,
@@ -230,8 +245,21 @@ class ApiController extends AbstractController
         SessionInterface $session
     ): JsonResponse {
 
-        // Init a new Deck
-        $deck = new Deck(true);
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
+
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
+
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
         // Shuffle the deck.
         $deck->shuffle();
@@ -259,25 +287,39 @@ class ApiController extends AbstractController
     public function deck_draw(
         SessionInterface $session
     ): JsonResponse {
-        // Get Deck json data from session.
-        $jsonDeck = $session->get('deck');
 
-        // Init a new Deck based on session.
-        $rawData = json_decode($jsonDeck, true);
-        $deck = new Deck(true, $rawData);
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
 
-        // Draw a card.
-        $drawn = $deck->draw();
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
 
-        // Save modified deck to session.
-        $session->set('deck', json_encode($deck));
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
-        /** @var CardGraphic $drawn */
-        // Add the correct name and color.
-        $drawnCards[] = [
-            'name' => $drawn->getAsString(),
-            'color' => $drawn->getColor()
-        ];
+        $drawnCards = [];
+
+        if (count($deck->getCards())) {
+            // Draw a card.
+            $drawn = $deck->draw();
+
+            // Save modified deck to session.
+            $session->set('deck', json_encode($deck));
+
+            /** @var CardGraphic $drawn */
+            // Add the correct name and color.
+            $drawnCards[] = [
+                'name' => $drawn->getAsString(),
+                'color' => $drawn->getColor()
+            ];
+        }
 
         $response = new JsonResponse([
             'drawn' => $drawnCards,
@@ -294,16 +336,26 @@ class ApiController extends AbstractController
         int $num,
         SessionInterface $session
     ): JsonResponse {
+
         if ($num > 52) {
             throw new \Exception('Can not draw more cards than the deck contains!');
         }
 
-        // Get Deck json data from session.
-        $jsonDeck = $session->get('deck');
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
 
-        // Init a new Deck based on session.
-        $rawData = json_decode($jsonDeck, true);
-        $deck = new Deck(true, $rawData);
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
+
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
         // Loop through and draw a card for each specified number.
         $drawnCards = [];
@@ -333,5 +385,4 @@ class ApiController extends AbstractController
 
         return $response;
     }
-
 }

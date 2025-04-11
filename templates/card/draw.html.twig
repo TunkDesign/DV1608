@@ -10,6 +10,11 @@
     <p>
       Here's your drawn card!
     </p>
+    {% if cards_left == 0 %}
+    <p>
+      <b>You have no more cards left. <a href="{{ path('card_shuffle') }}">Click here</a> to shuffle a new deck, or draw another card from a sorted deck.</b>
+    </p>
+    {% endif %}
   </div>
 </section>
 

@@ -48,6 +48,13 @@ class Deck implements \JsonSerializable
         );
     }
 
+    public function getSortedCardsBySuit(string $suit): array
+    {
+        $cards = $this->getCardsBySuit($suit);
+        usort($cards, fn ($a, $b) => $a->getValue() <=> $b->getValue());
+        return $cards;
+    }
+
     public function shuffle(): void
     {
         shuffle($this->cards);

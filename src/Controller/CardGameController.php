@@ -20,17 +20,31 @@ class CardGameController extends AbstractController
     }
 
     #[Route('/card/deck', name: 'card_deck')]
-    public function deck(): Response
-    {
+    public function deck(
+        SessionInterface $session
+    ): Response {
 
-        // Init a new Deck
-        $deck = new Deck(true);
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
+
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
+
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
         // Save each suit in their own variables.
-        $spades = $deck->getCardsBySuit('spades');
-        $hearts = $deck->getCardsBySuit('hearts');
-        $diamonds = $deck->getCardsBySuit('diamonds');
-        $clubs = $deck->getCardsBySuit('clubs');
+        $spades = $deck->getSortedCardsBySuit('spades');
+        $hearts = $deck->getSortedCardsBySuit('hearts');
+        $diamonds = $deck->getSortedCardsBySuit('diamonds');
+        $clubs = $deck->getSortedCardsBySuit('clubs');
 
         return $this->render('card/deck.html.twig', [
             'spades' => $spades,
@@ -44,8 +58,22 @@ class CardGameController extends AbstractController
     public function shuffle(
         SessionInterface $session
     ): Response {
-        // Init a new Deck
-        $deck = new Deck(true);
+
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
+
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
+
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
         // Shuffle the deck.
         $deck->shuffle();
@@ -71,25 +99,39 @@ class CardGameController extends AbstractController
     public function draw(
         SessionInterface $session
     ): Response {
-        // Get Deck json data from session.
-        $jsonDeck = $session->get('deck');
 
-        // Init a new Deck based on session.
-        $rawData = json_decode($jsonDeck, true);
-        $deck = new Deck(true, $rawData);
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
 
-        // Draw a card.
-        $drawn = $deck->draw();
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
 
-        // Save modified deck to session.
-        $session->set('deck', json_encode($deck));
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
-        /** @var CardGraphic $drawn */
-        // Add the correct name and color.
-        $drawnCards[] = [
-                'name' => $drawn->getAsString(),
-                'color' => $drawn->getColor()
-        ];
+        $drawnCards = [];
+
+        if (count($deck->getCards())) {
+            // Draw a card.
+            $drawn = $deck->draw();
+
+            // Save modified deck to session.
+            $session->set('deck', json_encode($deck));
+
+            /** @var CardGraphic $drawn */
+            // Add the correct name and color.
+            $drawnCards[] = [
+                    'name' => $drawn->getAsString(),
+                    'color' => $drawn->getColor()
+            ];
+        }
 
         return $this->render('card/draw.html.twig', [
             'drawn' => $drawnCards,
@@ -106,12 +148,21 @@ class CardGameController extends AbstractController
             throw new \Exception('Can not draw more cards than the deck contains!');
         }
 
-        // Get deck json data from session.
-        $jsonDeck = $session->get('deck');
+        // Check if a deck exists in session.
+        if ($session->get('deck')) {
+            // Get Deck json data from session.
+            $jsonDeck = $session->get('deck');
 
-        // Init a new deck based on session.
-        $rawData = json_decode($jsonDeck, true);
-        $deck = new Deck(true, $rawData);
+            // Init a new Deck based on session.
+            $rawData = json_decode($jsonDeck, true);
+            $deck = new Deck(true, $rawData);
+        } else {
+            // Init a new Deck
+            $deck = new Deck(true);
+
+            // Save deck in session
+            $session->set('deck', json_encode($deck));
+        }
 
         // Loop through and draw a card for each specified number.
         $drawnCards = [];
