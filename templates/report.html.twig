@@ -10,6 +10,7 @@
 
     <nav class="report-nav">
       <a href="#kmom01">Kmom01</a>
+      <a href="#kmom02">Kmom02</a>
     </nav>
 
     <article id="kmom01" class="report-section">
@@ -42,6 +43,31 @@
 
       <h3>Today I Learned</h3>
       <p>Det jag lärde mig mest av den här delen var hur ett ramverk som Symfony bygger upp ett projekt. Även om jag inte själv hade valt det till ett mindre projekt, så är det intressant att se hur det är uppbyggt. Jag tar med mig många idéer som jag kan använda i mina egna projekt.</p>
+    </article>
+
+    <article id="kmom02" class="report-section">
+      <h2>Kmom02</h2>
+      <h3>Förklaringar</h3>
+      <ul>
+        <li><b>Arv</b> gör att en klass kan ärva egenskaper och metoder från en annan klass med <code>extends</code>. Jag använder det för att låta <code>CardGraphic</code> ärva från <code>Card</code>.</li>
+        <li><b>Komposition</b> innebär att en klass använder andra objekt som delar. Klassen <code>Deck</code> innehåller flera <code>CardGraphic</code>-objekt.</li>
+        <li><b>Interface</b> definierar vilka metoder en klass måste ha, utan att ge implementation. Jag använde inte interface i uppgiften, men det hade kunnat användas för att till exempel definiera gemensam funktionalitet mellan olika typer av kort.</li>
+        <li><b>Trait</b> används för att återanvända metoder i flera klasser. Jag använde inte trait här, men det hade kunnat användas för till exempel färglogik.</li>
+      </ul>
+
+      <h3>Min implementation</h3>
+      <p>Tack vare tidigare övningar med tärningsklasser och hantering av session så var det ganska enkelt att göra om koden för att passa ett kortspel. Jag kunde återanvända väldigt mycket från dice-övningarna, vilket gjorde att mycket föll på plats direkt.</p>
+      <p>Jag är relativt nöjd med strukturen och hur det gick att följa flödet i applikationen. Koden är ganska modulär och går enkelt att utöka. Självklart finns det några förbättringsområden, som till exempel en bättre felhantering, och det kunde vara bra att flytta ut vissa delar till interface eller traits om man vill göra applikationen ännu mer modulär. Men för uppgiftens syfte tycker jag att lösningen blev bra och tydlig.</p>
+
+      <h3>Är Symfony verkligen så bra?</h3>
+      <p>Symfony ger en relativt tydlig uppdelning mellan data, logik och vy, vilket kan vara en stor fördel i större projekt där många jobbar tillsammans eller där kodbasen växer snabbt. Det gör det såklart enklare att hålla isär ansvar, återanvända kod och följa något som MVC.</p>
+      <p>Samtidigt är Symfony ganska tungt, både i form av mängden kod som krävs för att göra något relativt enkelt, och i själva ramverket. Det känns overkill för mindre projekt där man bara vill bygga något snabbt, och det känns inte riktigt som om arbetet verkligen vägs upp av nyttan.</p>
+      <p>Jag tycker Symfony känns lite bloated. Det händer ofta att man får skriva mycket konfiguration och boilerplate-kod för att få igång något som hade varit betydligt enklare i ren PHP. Det kräver dessutom att man förstår en hel del om hur ramverket tänker, vilket kan skapa onödiga hinder i början. För mindre applikationer känns det som det tar mer resurser än det ger.</p>
+      <p>Med det sagt uppskattar jag ändå den struktur Symfony tvingar fram. I större eller mer långsiktiga projekt kan jag ser eventuella fördelar, men i mindre uppgifter eller personliga projekt skulle jag hellre välja ett lättare alternativ.</p>
+
+      <h3>Today I Learned</h3>
+      <p>Jag försöker ha ett öppet mindset, men det är inte alltid enkelt. Symfony har ganska strikta regler för hur saker ska göras, och det gör att felsökning ibland tar betydligt längre tid än i enklare PHP-projekt. Det känns som att mycket tid går åt till att förstå ramverkets sätt att tänka, snarare än att faktiskt skriva funktionell kod.</p>
+      <p>Med det sagt har jag i det här kursmomentet fått en mycket tydligare bild av hur MVC fungerar i praktiken. Det blev mer konkret och detaljerat än tidigare, särskilt i hur ansvaret delas upp mellan controller, modell och vy. Så även om det ibland känns trögt, har jag ändå lärt mig mycket av att arbeta med Symfony.</p>
     </article>
   </div>
 </section>
