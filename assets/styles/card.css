@@ -89,3 +89,7 @@ body {
   .card.red {
     color: crimson;
   }
+
+  .container .about {
+    text-align: left;
+  }

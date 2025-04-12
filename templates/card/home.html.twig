@@ -10,6 +10,35 @@
     <p>
       Welcome to a Game of Cards!
     </p>
+
+    
+    <div class="about">
+      <h2>Structure</h2>
+      <p>
+        This game consists of three core classes.
+      </p>
+      <ul>
+        <li>
+          <b>Card</b><br>
+          Represents a playing card with a value and a suit. Contains basic methods such as <code>getValue()</code>, <code>getSuit()</code>, and <code>getAsString()</code>.
+        </li>
+        <br>
+        <li>
+          <b>CardGraphic</b><br>
+          Inherits from Card and adds graphical representation with unicode symbols and methods to get the card's color. It also overrides <code>getAsString()</code> to return an emoji.
+        </li>
+        <br>
+        <li>
+          <b>Deck</b><br>
+          Contains an array of Card or CardGraphic objects. Responsible for creating, shuffling, and drawing cards. Uses composition to manage a collection of cards.
+        </li>
+      </ul>
+    </div>
+    
+    <div class="uml">
+      <h2>UML Diagram</h2>
+      <img src="{{ asset('images/card-uml.png') }}" alt="Linnea Nyström" class="uml-img">
+    </div>
   </div>
 </section>
 {% endblock %}
