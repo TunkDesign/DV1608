@@ -65,7 +65,7 @@ class Deck implements \JsonSerializable
         return array_shift($this->cards);
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return $this->cards;
     }

@@ -35,7 +35,7 @@ class CardGraphic extends Card implements \JsonSerializable
         return in_array($this->suit, ['hearts', 'diamonds']) ? 'red' : 'black';
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'value' => $this->value,
