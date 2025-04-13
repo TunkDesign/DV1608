@@ -4,6 +4,7 @@
 
 {% block body %}
 <section class="about">
+  <a href="{{ path('session_delete') }}">Radera Session Data</a>
   <div class="container">
     <h2>Session Data</h2>
     <ul>
@@ -11,6 +12,9 @@
           <li>{{ ln }}</li>
       {% endfor %}
     </ul>
+
+    
+    {{ include('pig/flash.html.twig') }}
   </div>
 </section>
 {% endblock %}

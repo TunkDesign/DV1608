@@ -25,6 +25,11 @@ class SessionController extends AbstractController
     ): Response {
         $session->clear();
 
+        $this->addFlash(
+            'success',
+            'Nu är sessionen raderad!'
+        );
+
         return $this->redirectToRoute('session');
     }
 }
