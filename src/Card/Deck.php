@@ -42,16 +42,28 @@ class Deck implements \JsonSerializable
 
     public function getCardsBySuit(string $suit): array
     {
-        return array_filter(
-            $this->cards,
-            fn ($card) => $card->getSuit() === $suit
-        );
+        $matchingCards = [];
+    
+        foreach ($this->cards as $card) {
+            if ($card->getSuit() === $suit) {
+                $matchingCards[] = $card;
+            }
+        }
+    
+        return $matchingCards;
     }
 
     public function getSortedCardsBySuit(string $suit): array
     {
         $cards = $this->getCardsBySuit($suit);
-        usort($cards, fn ($a, $b) => $a->getValue() <=> $b->getValue());
+    
+        $values = [];
+        foreach ($cards as $card) {
+            $values[] = $card->getValue();
+        }
+    
+        array_multisort($values, SORT_ASC, $cards);
+    
         return $cards;
     }
 
