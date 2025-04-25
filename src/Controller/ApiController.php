@@ -317,7 +317,8 @@ class ApiController extends AbstractController
             // Add the correct name and color.
             $drawnCards[] = [
                 'name' => $drawn->getAsString(),
-                'color' => $drawn->getColor()
+                'color' => $drawn->getColor(),
+                'value' => $drawn->getValue()
             ];
         }
 
