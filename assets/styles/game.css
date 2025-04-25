@@ -1,0 +1,150 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: #333;
+    padding: 1rem 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    transition: background 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    background-color: #555;
+}
+
+main {
+    margin: auto;
+    padding: 2rem;
+}
+
+h1, h3, h4 {
+    margin-bottom: 1rem;
+}
+
+.game-wrapper {
+    text-align: center;
+    width: 100%;
+}
+
+.card-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 10rem;
+    width: 7rem;
+    height: 10rem;
+    background-color: #fff;
+    color: #000;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    line-height: 9rem;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
+
+.card.red {
+    color: crimson;
+}
+
+.actions {
+    margin-top: 2rem;
+}
+
+button {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.result {
+    color: crimson;
+    font-size: 1.5rem;
+}
+
+.players-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.player-card {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 220px;
+    text-align: center;
+}
+
+.player-info {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+
+.card-stack {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+#draw-button {
+    cursor: pointer;
+}
+
+.result {
+    text-align: center;
+    margin-top: 2rem;
+}

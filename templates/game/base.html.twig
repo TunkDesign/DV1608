@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="sv">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome{% endblock %} | Game of 21 Cards</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('game') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('game') }}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+            <div class="container">
+                <ul class="nav-links">
+                    <li><a href="{{ path('card_start') }}" class="{% if 'card_start' in app.request.attributes.get('_route') %}active{% endif %}">Start</a></li>
+                    <li><a href="{{ path('card_deck') }}" class="{% if 'card_deck' in app.request.attributes.get('_route') %}active{% endif %}">Deck</a></li>
+                    <li><a href="{{ path('card_shuffle') }}" class="{% if 'card_shuffle' in app.request.attributes.get('_route') %}active{% endif %}">Shuffle</a></li>
+                    <li><a href="{{ path('card_draw') }}" class="{% if 'card_draw' in app.request.attributes.get('_route') %}active{% endif %}">Draw</a></li>
+                    <li><a href="{{ path('card_draw_number', {num: 5}) }}" class="{% if 'card_draw_number' in app.request.attributes.get('_route') %}active{% endif %}">Draw 5</a></li>
+                </ul>
+            </div>
+            </nav>
+        </header>
+        
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>
