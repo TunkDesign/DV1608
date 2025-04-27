@@ -45,12 +45,12 @@ class Player
     {
         return $this->folded;
     }
-    
+
     public function hold(): void
     {
         $this->holding = true;
     }
-    
+
     public function isHolding(): bool
     {
         return $this->holding;
@@ -61,7 +61,8 @@ class Player
         $this->active = true;
     }
 
-    public function setInactive(): void {
+    public function setInactive(): void
+    {
         $this->active = false;
     }
 

@@ -42,7 +42,7 @@ class TwentyOne
         $prevPlayer->setInactive();
 
         $this->currentPlayerIndex++;
-        
+
         $this->getPlayer()->setActive();
 
         if ($prevPlayer->hasFolded() && $this->getPlayer() === $this->getLastPlayer()) {
@@ -105,11 +105,7 @@ class TwentyOne
 
         foreach ($cards as $card) {
             $value = $card->getValue();
-            if ($card->getValue() === 1) {
-                $sum += ($sum >= 7) ? 1 : 14;
-            } else {
-                $sum += $value;
-            }
+            $sum += $value;
         }
 
         return $sum;
@@ -127,7 +123,7 @@ class TwentyOne
                 if (!$player->hasFolded()) {
                     $activePlayers[] = $player;
                 }
-                
+
                 $player->setInactive();
             }
 
@@ -152,7 +148,7 @@ class TwentyOne
 
             return $winner;
         }
-    
+
         return null;
     }
 }

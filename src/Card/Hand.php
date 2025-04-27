@@ -19,8 +19,8 @@ class Hand
     public function getValue(): int
     {
         $sum = 0;
-        
-        foreach($this->cards as $card) {
+
+        foreach ($this->cards as $card) {
             $sum += $card->getValue();
         }
 

@@ -13,39 +13,16 @@ use function PHPSTORM_META\map;
 
 class TwentyOneController extends AbstractController
 {
+    #[Route('/game', name: 'game_start')]
+    public function start(): Response
+    {
+        return $this->render('game/start.html.twig');
+    }
+
     #[Route('/game/play', name: 'game_play')]
-    public function home(): Response
-    {
-        return $this->render('game/play.html.twig');
-    }
-
-    #[Route('/game/test', name: 'game_test')]
-    public function test(
+    public function play(
         SessionInterface $session
-    ): Response
-    {
-
-        if ($session->get('game')) {
-            $twentyOne = $session->get('game');
-        } else {
-            return $this->redirectToRoute('game_start');
-        }
-
-        //var_dump($twentyOne->getPlayer()->getHand()->getCards());
-
-        return $this->render('game/test.html.twig', [
-            'ended' => $twentyOne->hasEnded(),
-            'players' => $twentyOne->getPlayers(),
-            'player' => $twentyOne->getPlayer(),
-            'winner' => $twentyOne->getWinner()
-        ]);
-    }
-
-    #[Route('/game/start', name: 'game_start')]
-    public function start(
-        SessionInterface $session
-    ): Response
-    {
+    ): Response {
 
         if ($session->get('game')) {
             $twentyOne = $session->get('game');
@@ -57,53 +34,56 @@ class TwentyOneController extends AbstractController
             $twentyOne->addPlayer(new Player('Bank'));
         }
 
-        return $this->redirectToRoute('game_test');
+        return $this->render('game/play.html.twig', [
+            'ended' => $twentyOne->hasEnded(),
+            'players' => $twentyOne->getPlayers(),
+            'player' => $twentyOne->getPlayer(),
+            'winner' => $twentyOne->getWinner()
+        ]);
     }
 
     #[Route('/game/draw', name: 'game_draw')]
     public function draw(
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
 
         if ($session->get('game')) {
             $twentyOne = $session->get('game');
         } else {
-            return $this->redirectToRoute('game_start');
+            return $this->redirectToRoute('game_play');
         }
 
         if (!$twentyOne->hasEnded()) {
             $player = $twentyOne->getPlayer();
-    
+
             $twentyOne->draw($player);
         }
 
-        return $this->redirectToRoute('game_test');
+        return $this->redirectToRoute('game_play');
     }
 
     #[Route('/game/hold', name: 'game_hold')]
     public function hold(
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
 
         if ($session->get('game')) {
             $twentyOne = $session->get('game');
         } else {
-            return $this->redirectToRoute('game_start');
+            return $this->redirectToRoute('game_play');
         }
-        
+
         if ($twentyOne->getPlayer() === $twentyOne->getLastPlayer()) {
             $twentyOne->endGame();
         } else {
             $player = $twentyOne->getPlayer();
-    
+
             $player->hold();
 
             $twentyOne->nextPlayer();
         }
 
-        return $this->redirectToRoute('game_test');
+        return $this->redirectToRoute('game_play');
     }
 
 
@@ -118,6 +98,12 @@ class TwentyOneController extends AbstractController
             'Spelet återställdes!'
         );
 
-        return $this->redirectToRoute('game_test');
+        return $this->redirectToRoute('game_play');
+    }
+
+    #[Route('/game/doc', name: 'game_doc')]
+    public function doc(): Response
+    {
+        return $this->render('game/doc.html.twig');
     }
 }
