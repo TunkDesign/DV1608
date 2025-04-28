@@ -84,10 +84,12 @@ class CardGameController extends AbstractController
         $cards = [];
         // Loop through the deck and assign the correct color.
         foreach ($deck->getCards() as $card) {
-            $cards[] = [
-                'name' => $card->getAsString(),
-                'color' => $card->getColor()
-            ];
+            if ($card instanceof CardGraphic) {
+                $cards[] = [
+                    'name' => $card->getAsString(),
+                    'color' => $card->getColor()
+                ];
+            }
         }
 
         return $this->render('card/shuffle.html.twig', [
@@ -122,15 +124,16 @@ class CardGameController extends AbstractController
             // Draw a card.
             $drawn = $deck->draw();
 
-            // Save modified deck to session.
-            $session->set('deck', json_encode($deck));
-
-            /** @var CardGraphic $drawn */
             // Add the correct name and color.
-            $drawnCards[] = [
+            if ($drawn instanceof CardGraphic) {
+                $drawnCards[] = [
                     'name' => $drawn->getAsString(),
                     'color' => $drawn->getColor()
-            ];
+                ];
+            }
+
+            // Save modified deck to session.
+            $session->set('deck', json_encode($deck));
         }
 
         return $this->render('card/draw.html.twig', [
@@ -169,8 +172,7 @@ class CardGameController extends AbstractController
         for ($i = 0; $i < $num; $i++) {
             $card = $deck->draw();
 
-            /** @var CardGraphic $card */
-            if ($card) {
+            if ($card instanceof CardGraphic) {
                 $drawnCards[] = [
                     'name' => $card->getAsString(),
                     'color' => $card->getColor()

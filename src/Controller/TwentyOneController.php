@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-use function PHPSTORM_META\map;
-
 class TwentyOneController extends AbstractController
 {
     #[Route('/game', name: 'game_start')]

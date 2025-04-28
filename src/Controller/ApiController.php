@@ -2,15 +2,19 @@
 
 namespace App\Controller;
 
-use App\Card\Deck;
+use App\Card;
+use App\Card\CardGraphic;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Controller\Traits\DeckSessionTrait;
 
 class ApiController extends AbstractController
 {
+    use DeckSessionTrait;
+
     #[Route('/api/', name: 'api')]
     public function api(): Response
     {
@@ -202,169 +206,84 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/deck', name: 'api_deck')]
-    public function deck(
-        SessionInterface $session
-    ): JsonResponse {
+    public function deck(SessionInterface $session): JsonResponse
+    {
+        $deck = $this->getDeck($session);
 
-        // Check if a deck exists in session.
-        if ($session->get('deck')) {
-            // Get Deck json data from session.
-            $jsonDeck = $session->get('deck');
-
-            // Init a new Deck based on session.
-            $rawData = json_decode($jsonDeck, true);
-            $deck = new Deck(true, $rawData);
-        } else {
-            // Init a new Deck
-            $deck = new Deck(true);
-
-            // Save deck in session
-            $session->set('deck', json_encode($deck));
-        }
-
-        // Save each suit in their own variables.
-        $spades = $deck->getSortedCardsBySuit('spades');
-        $hearts = $deck->getSortedCardsBySuit('hearts');
-        $diamonds = $deck->getSortedCardsBySuit('diamonds');
-        $clubs = $deck->getSortedCardsBySuit('clubs');
-
-        $response = new JsonResponse([
-            'spades' => $spades,
-            'hearts' => $hearts,
-            'diamonds' => $diamonds,
-            'clubs' => $clubs
+        return $this->json([
+            'spades' => $deck->getSortedCardsBySuit('spades'),
+            'hearts' => $deck->getSortedCardsBySuit('hearts'),
+            'diamonds' => $deck->getSortedCardsBySuit('diamonds'),
+            'clubs' => $deck->getSortedCardsBySuit('clubs'),
+        ], 200, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         ]);
-
-        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-
-        return $response;
     }
 
-    #[Route('/api/deck/shuffle', name: 'api_deck_suffle')]
-    public function deck_shuffle(
-        SessionInterface $session
-    ): JsonResponse {
-
-        // Check if a deck exists in session.
-        if ($session->get('deck')) {
-            // Get Deck json data from session.
-            $jsonDeck = $session->get('deck');
-
-            // Init a new Deck based on session.
-            $rawData = json_decode($jsonDeck, true);
-            $deck = new Deck(true, $rawData);
-        } else {
-            // Init a new Deck
-            $deck = new Deck(true);
-
-            // Save deck in session
-            $session->set('deck', json_encode($deck));
-        }
-
-        // Shuffle the deck.
+    #[Route('/api/deck/shuffle', name: 'api_deck_shuffle')]
+    public function deckShuffle(SessionInterface $session): JsonResponse
+    {
+        $deck = $this->getDeck($session);
         $deck->shuffle();
-
-        // Save deck in session
-        $session->set('deck', json_encode($deck));
+        $this->saveDeck($session, $deck);
 
         $cards = [];
-        // Loop through the deck and assign the correct color.
+
         foreach ($deck->getCards() as $card) {
-            $cards[] = [
-                'name' => $card->getAsString(),
-                'color' => $card->getColor()
-            ];
+            if ($card instanceof CardGraphic) {
+                $cards[] = [
+                    'name' => $card->getAsString(),
+                    'color' => $card->getColor()
+                ];
+            }
         }
 
-        $response = new JsonResponse($cards);
-
-        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-
-        return $response;
+        return $this->json($cards, 200, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        ]);
     }
 
+
     #[Route('/api/deck/draw', name: 'api_deck_draw')]
-    public function deck_draw(
-        SessionInterface $session
-    ): JsonResponse {
-
-        // Check if a deck exists in session.
-        if ($session->get('deck')) {
-            // Get Deck json data from session.
-            $jsonDeck = $session->get('deck');
-
-            // Init a new Deck based on session.
-            $rawData = json_decode($jsonDeck, true);
-            $deck = new Deck(true, $rawData);
-        } else {
-            // Init a new Deck
-            $deck = new Deck(true);
-
-            // Save deck in session
-            $session->set('deck', json_encode($deck));
-        }
+    public function deckDraw(SessionInterface $session): JsonResponse
+    {
+        $deck = $this->getDeck($session);
 
         $drawnCards = [];
 
-        if (count($deck->getCards())) {
-            // Draw a card.
+        if (count($deck->getCards()) > 0) {
             $drawn = $deck->draw();
-
-            // Save modified deck to session.
-            $session->set('deck', json_encode($deck));
-
-            /** @var CardGraphic $drawn */
-            // Add the correct name and color.
-            $drawnCards[] = [
-                'name' => $drawn->getAsString(),
-                'color' => $drawn->getColor(),
-                'value' => $drawn->getValue()
-            ];
+            if ($drawn instanceof CardGraphic) {
+                $drawnCards[] = [
+                    'name' => $drawn->getAsString(),
+                    'color' => $drawn->getColor(),
+                    'value' => $drawn->getValue()
+                ];
+            }
+            $this->saveDeck($session, $deck);
         }
 
-        $response = new JsonResponse([
+        return $this->json([
             'drawn' => $drawnCards,
             'cards_left' => count($deck->getCards())
+        ], 200, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         ]);
-
-        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-
-        return $response;
     }
 
     #[Route('/api/deck/draw/{num<\d+>}', name: 'api_deck_draw_number')]
-    public function deck_draw_number(
-        int $num,
-        SessionInterface $session
-    ): JsonResponse {
-
+    public function deckDrawNumber(int $num, SessionInterface $session): JsonResponse
+    {
         if ($num > 52) {
-            throw new \Exception('Can not draw more cards than the deck contains!');
+            throw new \Exception('Cannot draw more cards than the deck contains!');
         }
 
-        // Check if a deck exists in session.
-        if ($session->get('deck')) {
-            // Get Deck json data from session.
-            $jsonDeck = $session->get('deck');
-
-            // Init a new Deck based on session.
-            $rawData = json_decode($jsonDeck, true);
-            $deck = new Deck(true, $rawData);
-        } else {
-            // Init a new Deck
-            $deck = new Deck(true);
-
-            // Save deck in session
-            $session->set('deck', json_encode($deck));
-        }
-
-        // Loop through and draw a card for each specified number.
+        $deck = $this->getDeck($session);
         $drawnCards = [];
+
         for ($i = 0; $i < $num; $i++) {
             $card = $deck->draw();
-
-            /** @var CardGraphic $card */
-            if ($card) {
+            if ($card instanceof CardGraphic) {
                 $drawnCards[] = [
                     'name' => $card->getAsString(),
                     'color' => $card->getColor()
@@ -374,16 +293,13 @@ class ApiController extends AbstractController
             }
         }
 
-        // Save modified deck to session.
-        $session->set('deck', json_encode($deck));
+        $this->saveDeck($session, $deck);
 
-        $response = new JsonResponse([
+        return $this->json([
             'drawn' => $drawnCards,
             'cards_left' => count($deck->getCards())
+        ], 200, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         ]);
-
-        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-
-        return $response;
     }
 }
