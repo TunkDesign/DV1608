@@ -26,6 +26,7 @@
                     <li><a href="{{ path('lucky') }}" class="{% if 'lucky' in app.request.attributes.get('_route') %}active{% endif %}">Lycka</a></li>
                     <li><a href="{{ path('api') }}" class="{% if 'api' in app.request.attributes.get('_route') %}active{% endif %}">API</a></li>
                     <li><a href="{{ path('card_start') }}" class="{% if 'card_start' in app.request.attributes.get('_route') %}active{% endif %}">Kort</a></li>
+                    <li><a href="{{ path('game_start') }}" class="{% if 'game_start' in app.request.attributes.get('_route') %}active{% endif %}">21</a></li>
                     <li><a href="{{ path('session') }}" class="{% if 'session' in app.request.attributes.get('_route') %}active{% endif %}">Session</a></li>
                 </ul>
             </div>
