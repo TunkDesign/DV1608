@@ -1,0 +1,29 @@
+{% extends "game/base.html.twig" %}
+
+{% block title %}Startsida{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Välkommen till kortspelet 21</h1>
+
+    <section>
+        <article>
+            <h2>Om spelet</h2>
+            <p>
+                Kortspelet 21 är ett turbaserat spel där målet är att komma så nära 21 poäng som möjligt utan att gå över.
+                Varje spelare drar kort och kan välja att dra fler kort för att öka sin poäng, eller stanna för att inte riskera att gå över 21.
+                Om en spelare överstiger 21 poäng lägger de sig automatiskt. Banken spelar sist och drar kort tills den har minst 17 poäng.
+                När alla spelare är klara utses vinnaren baserat på vem som är närmast 21.
+            </p>
+        </article>
+
+        <article>
+            <h2>Starta spelet</h2>
+            <p>Klicka på knappen nedan för att börja spela!</p>
+            <a href="{{ path('game_play') }}">
+                <button class="start-button">Börja spela</button>
+            </a>
+        </article>
+    </section>
+</div>
+{% endblock %}
