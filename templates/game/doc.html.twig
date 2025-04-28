@@ -1,0 +1,118 @@
+{% extends "game/base.html.twig" %}
+
+{% block title %}Dokumentation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mb-5">Dokumentation av kortspelet 21</h1>
+
+    <section class="documentation-section">
+        <article class="doc-block">
+            <h2>Flödesschema</h2>
+            <div class="flowchart">
+                <img src="{{ asset('images/flowchart-21.png') }}" alt="Flödesschema för kortspelet 21" class="img-fluid">
+            </div>
+        </article>
+
+        <article class="doc-block">
+            <h2>Pseudokod</h2>
+            <pre class="code-block">
+// ────────────────── DEL 1: DRA KORT ──────────────────
+PROCEDUR draKort(aktuellSpelare)
+    OM aktuellSpelare.håller OR aktuellSpelare.harFoldat
+        ÅTERGÅ                               // Spelaren får/kan inte dra.
+    SLUT OM
+
+    kort = leken.dra()
+
+    OM kort FINNS
+        aktuellSpelare.läggTillKort(kort)
+
+        // Bust?
+        OM beräknaPoäng(aktuellSpelare) > 21 DÅ
+            aktuellSpelare.folda()
+            OM aktuellSpelare ÄR sistaSpelaren
+                avslutaSpel()
+            ANNARS
+                bytTillNästaSpelare()
+            SLUT OM
+        SLUT OM
+    SLUT OM
+SLUT PROCEDUR
+
+
+// ────────────────── DEL 2: BYT SPELARE ──────────────────
+PROCEDUR bytTillNästaSpelare()
+    föregående = spelare[aktuelltIndex]
+    föregående.sättInaktiv()
+
+    aktuelltIndex = (aktuelltIndex + 1)      // Ändra aktiv spelare.
+
+    nuvarande = spelare[aktuelltIndex]
+    nuvarande.sättAktiv()
+
+    OM föregående.harFoldat OCH nuvarande ÄR sistaSpelaren
+        avslutaSpel()
+    SLUT OM
+SLUT PROCEDUR
+
+
+// ────────────────── DEL 3: TA FRAM VINNARE ──────────────────
+FUNKTION hämtaVinnare()
+    OM speletPågår
+        ÅTERGÅ med NULL                      // Gör ingenting.
+    SLUT OM
+
+    aktiva = LISTA över spelare SOM INTE harFoldat
+    OM aktiva.ärTom()
+        ÅTERGÅ med NULL                      // Ingen vinnare.
+    SLUT OM
+
+    högstaPoäng = 0
+    vinnare     = NULL
+    oavgjort    = FALSKT
+
+    FÖR varje spelare I aktiva
+        poäng = beräknaPoäng(spelare)
+        OM poäng > högstaPoäng DÅ
+            högstaPoäng = poäng
+            vinnare     = spelare
+            oavgjort    = FALSKT
+        ANNARS OM poäng = högstaPoäng DÅ
+            oavgjort = SANT
+        SLUT OM
+    SLUT FÖR
+
+    ÅTERGÅ oavgjort ? sistaSpelaren : vinnare
+SLUT FUNKTION</pre>
+        </article>
+
+        <article class="doc-block">
+            <h2>Klassbeskrivning</h2>
+
+            <ul class="class-list">
+                <li>
+                    <b>Card</b><br>
+                    Representerar ett enskilt spelkort med färg och värde.
+                </li>
+                <li>
+                    <b>Deck</b><br>
+                    Hanterar kortleken och ansvarar för att skapa, blanda och dra kort.
+                </li>
+                <li>
+                    <b>Hand</b><br>
+                    Håller reda på en spelares aktuella kort i handen.
+                </li>
+                <li>
+                    <b>Player</b><br>
+                    Representerar en spelare, med hand, poäng och status.
+                </li>
+                <li>
+                    <b>TwentyOne</b>
+                    <br>Hanterar spelomgången, turbyten, poängberäkning och vinnare.
+                </li>
+            </ul>
+        </article>
+    </section>
+</div>
+{% endblock %}

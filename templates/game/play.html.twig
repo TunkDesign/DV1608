@@ -3,104 +3,89 @@
 {% block title %}Play{% endblock %}
 
 {% block body %}
+<div class="game-wrapper">
+    {% if not ended %}
+        <div class="actions">
+            <div>
+                <div class="card-stack">
+                    <a href="/game/draw"><span class="card" id="draw-button">🂠</span></a>
+                </div>
+                <p>Klicka på kortet för att dra ett.</p>
+            </div>
 
-<div class="container">
-    <div class="game-wrapper">
-<h1>Spela 21</h1>
+            {% if player.getName != 'Bank' %}
 
-<div>
-    <div class="card-stack">
-        <span class="card" id="draw-button">🂠</span>
-        
+            <a href="/game/hold">
+                <button type="submit">Stanna</button>
+            </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="result">
+            <p>Vinnare: {{ winner.getName }}</p>
+            <p>Poäng: {{ winner.getScore }}</p>
+        </div>
+    {% endif %}
+</div>
+
+<hr>
+
+<h1>Spelare</h1>
+<div class="players-row">
+    {% for player in players %}
+    <div class="player-card" data-name="{{ player.getName }}" data-score="{{ player.getScore }}" {% if player.isActive %}data-active="true"{% endif %}>
+        {% if player.isActive %}
+            <h3>Aktiv</h3>
+        {% endif %}
+        <h4>{{ player.getName }}</h4>
+        <p>Poäng: {{ player.getScore }}</p>
+        {% if player.hasFolded %}
+            <p>Lade sig</p>
+        {% endif %}
+
+        <div class="card-row">
+            {% for card in player.getHand.getCards %}
+                <div class="card {{ card.color }}">{{ card.getAsString }}</div>
+            {% endfor %}
+        </div>
     </div>
-    <p>Klicka på kortet för att dra</p>
+{% endfor %}
 </div>
 
-<div class="mt-5">
-    <h4>Spelarens kort (<span id="player-points">0</span>):</h4>
-    <div class="card-row" id="player-cards"></div>
-</div>
+<hr>
+<a href="/game/reset">
+    <button>Återställ spelplanen</button>
+</a>
 
-<div class="actions">
-    <button id="stay-button" disabled>Stanna</button>
-</div>
-
-<div class="mt-5" id="dealer-section" style="display: none;">
-    <h4>Bankens kort (<span id="dealer-points">0</span>):</h4>
-    <div class="card-row" id="dealer-cards"></div>
-</div>
-
-<div class="mt-4">
-    <h3 id="result" class="result"></h3>
-</div>
-
-</div>
-</div>
 <script>
-    let playerCards = [];
-    let dealerCards = [];
-    let playerTurn = true;
-    let playerPoints = 0;
-    let dealerPoints = 0;
-
-    document.getElementById('draw-button').addEventListener('click', () => {
-        if (!playerTurn) return;
-
-        fetch('/api/deck/draw')
-            .then(response => response.json())
-            .then(data => {
-                playerPoints += data.drawn[0].value;
-                document.getElementById('player-points').textContent = playerPoints;
-
-                console.log(data);
-                if (data.drawn) {
-                    const cardDiv = document.createElement('div');
-                    cardDiv.classList.add('card');
-                    cardDiv.classList.add(data.drawn[0].color);
-                    cardDiv.textContent = data.drawn[0].name;
-                    document.getElementById('player-cards').appendChild(cardDiv);
-                }
-                if (playerPoints > 21) {
-                    document.getElementById('result').textContent = "Du förlorade och banken vann!";
-                    playerTurn = false;
-                    //startDealerTurn();
-                } else {
-                    document.getElementById('stay-button').disabled = false;
-                }
-            });
-    });
-
-    document.getElementById('stay-button').addEventListener('click', () => {
-        playerTurn = false;
-        startDealerTurn();
-    });
-
-    function startDealerTurn() {
-        document.getElementById('dealer-section').style.display = 'block';
-
-        function drawNextCard() {
-            fetch('/api/deck/draw')
-                .then(response => response.json())
-                .then(data => {
-                    dealerPoints += data.drawn[0].value;
-                    document.getElementById('dealer-points').textContent = dealerPoints;
-                    if (data.drawn) {
-                        const cardDiv = document.createElement('div');
-                        cardDiv.classList.add('card');
-                        cardDiv.classList.add(data.drawn[0].color);
-                        cardDiv.textContent = data.drawn[0].name;
-                        document.getElementById('dealer-cards').appendChild(cardDiv);
-                    }
-                    if (dealerPoints > 21) {
-                        document.getElementById('result').textContent = "Vem vann?";
+    document.addEventListener("DOMContentLoaded", () => {
+        const players = document.querySelectorAll('.player-card');
+    
+        players.forEach(player => {
+            const name = player.dataset.name;
+            const score = parseInt(player.dataset.score, 10);
+            const isActive = player.dataset.active === "true";
+    
+            if (name === "Bank" && isActive) {
+                // Starta automatiskt kortdragning med intervall
+                let currentScore = score;
+                const interval = setInterval(() => {
+                    if (currentScore >= 17) {
+                        clearInterval(interval);
+                        window.location.href = "/game/hold";
                     } else {
-                        setTimeout(drawNextCard, 1500);
+                        // Hämta nytt kort (simulerar klick på /game/draw)
+                        fetch("/game/draw")
+                            .then(() => {
+                                // Ladda om sidan efter varje dragning
+                                window.location.reload();
+                            });
                     }
-                });
-        }
-
-        drawNextCard();
-    }
-</script>
+                }, 1000); // Dra nytt kort varje sekund
+            }
+        });
+    });
+    </script>
+    
 
 {% endblock %}

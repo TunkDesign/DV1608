@@ -148,3 +148,62 @@ button:disabled {
     text-align: center;
     margin-top: 2rem;
 }
+
+.start-button {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.start-button:hover {
+    background-color: #666;
+}
+
+.documentation-section {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.doc-block {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.code-block {
+    background-color: #000;
+    color:#f4f4f4;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-family: monospace;
+}
+
+.class-list {
+    list-style: none;
+    padding: 0;
+}
+
+.class-list li {
+    margin-bottom: 0.75rem;
+}
+
+.flowchart img {
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
