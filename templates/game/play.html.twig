@@ -6,6 +6,9 @@
 <div class="game-wrapper">
     {% if not ended %}
         <div class="actions">
+
+            {{ include('flash.html.twig') }}
+
             <div>
                 <div class="card-stack">
                     <a href="/game/draw"><span class="card" id="draw-button">🂠</span></a>

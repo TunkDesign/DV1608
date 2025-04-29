@@ -207,3 +207,34 @@ button:disabled {
     margin-left: auto;
     margin-right: auto;
 }
+
+.flash-notice {
+    padding: 0.5em;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+.flash-notice:before {
+    content: "ⓘ";
+}
+
+.flash-warning {
+    padding: 0.5em;
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.flash-warning:before {
+    content: "⚠";
+}
+
+.flash-success {
+    padding: 0.5em;
+    color: #04851a;
+    background-color: #d7ffcd;
+    border-color: #baffba;
+}
+
+.flash-success:before {
+    content: "🗸";
+}
