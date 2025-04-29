@@ -67,21 +67,18 @@
             const isActive = player.dataset.active === "true";
     
             if (name === "Bank" && isActive) {
-                // Starta automatiskt kortdragning med intervall
                 let currentScore = score;
                 const interval = setInterval(() => {
                     if (currentScore >= 17) {
                         clearInterval(interval);
                         window.location.href = "/game/hold";
                     } else {
-                        // Hämta nytt kort (simulerar klick på /game/draw)
                         fetch("/game/draw")
                             .then(() => {
-                                // Ladda om sidan efter varje dragning
                                 window.location.reload();
                             });
                     }
-                }, 1000); // Dra nytt kort varje sekund
+                }, 1000);
             }
         });
     });
