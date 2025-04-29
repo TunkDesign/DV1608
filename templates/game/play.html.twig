@@ -11,14 +11,14 @@
 
             <div>
                 <div class="card-stack">
-                    <a href="/game/draw"><span class="card" id="draw-button">🂠</span></a>
+                    <a href="{{ path('game_draw') }}"><span class="card" id="draw-button">🂠</span></a>
                 </div>
                 <p>Klicka på kortet för att dra ett.</p>
             </div>
 
             {% if player.getName != 'Bank' %}
 
-            <a href="/game/hold">
+            <a href="{{ path('game_hold') }}">
                 <button type="submit">Stanna</button>
             </a>
             {% endif %}
@@ -56,7 +56,7 @@
 </div>
 
 <hr>
-<a href="/game/reset">
+<a href="{{ path('game_reset') }}">
     <button>Återställ spelplanen</button>
 </a>
 
@@ -74,9 +74,9 @@
                 const interval = setInterval(() => {
                     if (currentScore >= 17) {
                         clearInterval(interval);
-                        window.location.href = "/game/hold";
+                        window.location.href = "{{ path('game_hold') }}";
                     } else {
-                        fetch("/game/draw")
+                        fetch("{{ path('game_draw') }}")
                             .then(() => {
                                 window.location.reload();
                             });
