@@ -139,6 +139,30 @@ class ApiController extends AbstractController
                     ],
                     'cards_left' => 30
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ],
+            [
+                'title' => 'Visa spelstatus',
+                'description' => 'Returnerar information om det aktuella spelet, inklusive spelare, kortlek, om spelet är slut och vinnaren. Om inget spel är aktivt, returneras ett felmeddelande.',
+                'method' => 'GET',
+                'path' => 'game',
+                'example' => 'game',
+                'response' => json_encode([
+                    'players' => [
+                        [
+                            'name' => 'Player 1',
+                            'score' => 15
+                        ],
+                        [
+                            'name' => 'Player 2',
+                            'score' => 20
+                        ]
+                    ],
+                    'deck' => [
+                        'cards_left' => 30
+                    ],
+                    'ended' => false,
+                    'winner' => null
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ]
         ];
 
@@ -301,5 +325,32 @@ class ApiController extends AbstractController
         ], 200, [], [
             'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         ]);
+    }
+
+    #[Route('/api/game', name: 'api_game')]
+    public function game(SessionInterface $session): JsonResponse
+    {
+        // Check if a game is in session.
+        if ($session->get('game')) {
+            $game = $session->get('game');
+
+            return $this->json([
+                'players' => $game->getPlayers(),
+                'deck' => $game->getDeck(),
+                'ended' => $game->hasEnded(),
+                'winner' => $game->getWinner()
+            ], 200, [], [
+                'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+            ]);
+        }
+
+        // If no game is in session, return an error response.
+        return $this->json([
+            'error' => 'No game in session',
+            'message' => 'Please start a game first.'
+        ], 400, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        ]);
+
     }
 }
