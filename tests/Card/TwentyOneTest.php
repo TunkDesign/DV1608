@@ -149,7 +149,7 @@ class TwentyOneTest extends TestCase
         $game->endGame();
 
         $winner = $game->getWinner();
-        $this->assertSame($p2, $winner); // last player
+        $this->assertSame($p2, $winner);
     }
 
     public function testGetWinnerReturnsNullIfAllFolded(): void
