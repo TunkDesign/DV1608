@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap");
+
+:root {
+  --bg: #f7f4ef;
+  --primary: #6c5b7b;
+  --secondary: #d4a373;
+  --text-dark: #333;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --radius: 0px;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: "Quicksand", sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.navbar {
+  background: var(--primary);
+  box-shadow: var(--shadow);
+}
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+}
+.nav-links a {
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  transition: background 0.2s ease;
+  text-decoration: none;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  background: var(--secondary);
+}
+
+h1,
+h2 {
+  color: var(--primary);
+  margin-top: 0;
+}
+
+.flash-success {
+  padding: 10px;
+  background: #d1fadf;
+  border-left: 6px solid #74c69d;
+}
+.flash-error {
+  padding: 10px;
+  background: #ffe0e0;
+  border-left: 6px solid #e03131;
+}
+
+.book-list {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 2rem;
+  align-items: stretch;
+}
+.book-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background: #fff;
+  padding: 1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  align-items: center;
+}
+.book-cover {
+  width: 160px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+.book-item-link {
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 35px;
+}
+
+.book-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.book-cover-large {
+  max-width: 320px;
+  flex: 0 0 320px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.book-details .info {
+  flex: 1 1 280px;
+}
+.isbn {
+  margin: 0.5rem 0 1rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+input[type="text"],
+input[type="file"] {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+}
+button,
+.start-button,
+.back-button {
+  background: var(--secondary);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.form-fields {
+  flex: 1 1 260px;
+}
+.cover-preview-wrapper {
+  flex: 0 0 220px;
+  text-align: center;
+}
+.cover-preview {
+  width: 100%;
+  max-width: 220px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.preview-placeholder {
+  width: 220px;
+  height: 300px;
+  display: grid;
+  place-content: center;
+  border: 2px dashed #ccc;
+  border-radius: var(--radius);
+  color: #777;
+  font-style: italic;
+}

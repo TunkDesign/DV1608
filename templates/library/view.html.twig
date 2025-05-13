@@ -1,0 +1,31 @@
+{% extends "library/base.html.twig" %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    {{ include('flash.html.twig') }}
+
+    <h1>Books</h1>
+    <p>Click a book to see full details.</p>
+
+    {% if books|length > 0 %}
+        <div class="book-list">
+            {% for book in books %}
+                <a href="{{ path('library_view_id', {id: book.id}) }}" class="book-item-link">
+                    <article class="book-item" role="button">
+                        {% if book.img %}
+                            <img src="{{ book.img }}" alt="Cover of {{ book.title }}" class="book-cover">
+                        {% endif %}
+                        <h2>{{ book.title }}</h2>
+                        <p>{{ book.author }}</p>
+                    </article>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No books available.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "library/base.html.twig" %}
+
+{% block title %}Edit {{ book.title }}{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    {{ include('flash.html.twig') }}
+
+    <h1>Edit {{ book.title }}</h1>
+    <p>Update the information and cover image, then save your changes.</p>
+
+    <form method="post" action="{{ path('library_edit_post', {id: book.id}) }}" enctype="multipart/form-data" class="edit-form">
+        <div class="form-grid">
+            {# ----- left column: text fields -------------------------------- #}
+            <div class="form-fields">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="hidden" name="id" value="{{ book.id }}">
+                    <input type="text" id="title" name="title" value="{{ book.title }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" id="author" name="author" value="{{ book.author }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" value="{{ book.isbn }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cover">Change Cover Image</label>
+                    <input type="file" id="cover" name="cover" accept="image/*">
+                </div>
+            </div>
+
+            {# ----- right column: live preview / current cover -------------- #}
+            <div class="cover-preview-wrapper">
+                {% if book.img %}
+                    <img src="{{ book.img }}" alt="Cover of {{ book.title }}" class="cover-preview" id="current-cover">
+                {% else %}
+                    <div class="preview-placeholder">
+                        <p>No cover uploaded yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+                <div class="form-group">
+                    <button type="submit">Save Changes</button>
+                </div>
+    </form>
+
+    <div class="form-group">
+        <button class="back-button" onclick="location.href='{{ path('library_view_id', {'id': book.id}) }}';">← Back to Book</button>
+    </div>
+</div>
+{% endblock %}

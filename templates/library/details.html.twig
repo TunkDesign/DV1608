@@ -1,0 +1,31 @@
+{# templates/library/details.html.twig #}
+{% extends 'library/base.html.twig' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  <a href="{{ path('library_view') }}" class="back-button">← Tillbaka till alla böcker</a>
+
+  <article class="book-details">
+    {# omslag #}
+    {% if book.img ?? book.img %}
+      <img src="{{ book.img ?: book.img }}"
+           alt="Omslag för {{ book.title }}"
+           class="book-cover-large">
+    {% endif %}
+
+    <section class="info">
+      <h1>{{ book.title }}</h1>
+      <p class="author">{{ book.author }}</p>
+
+      {% if book.isbn %}
+        <p class="isbn"><strong>ISBN:</strong> {{ book.isbn }}</p>
+      {% endif %}
+
+    </section>
+  </article>
+
+</div>
+{% endblock %}

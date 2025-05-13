@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="sv">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome{% endblock %} | Library</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('library') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('library') }}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+            <div class="container">
+                {% if 'library_view_id' in app.request.attributes.get('_route')
+                    or 'library_edit' in app.request.attributes.get('_route')
+                    or 'library_delete' in app.request.attributes.get('_route') %}
+                <ul class="nav-links" style="float: right;">
+                        <li><a href="{{ path('library_edit', {id: book.id}) }}" class="{% if 'library_edit' in app.request.attributes.get('_route') %}active{% endif %}">Edit</a></li>
+                        <li><a href="{{ path('library_delete', {id: book.id}) }}" class="{% if 'library_delete' in app.request.attributes.get('_route') %}active{% endif %}">Delete</a></li>
+                </ul>
+                {% endif %}
+                <ul class="nav-links">
+                    <li><a href="{{ path('library_home') }}" class="{% if 'library_home' in app.request.attributes.get('_route') %}active{% endif %}">Home</a></li>
+                    <li><a href="{{ path('library_view') }}" class="{% if 'library_view' in app.request.attributes.get('_route') %}active{% endif %}">Books</a></li>
+                    <li><a href="{{ path('library_create') }}" class="{% if 'library_create' in app.request.attributes.get('_route') %}active{% endif %}">Add Book</a></li>
+                </ul>
+            </div>
+            </nav>
+        </header>
+        
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>
