@@ -25,6 +25,7 @@ Encore
     .addEntry('pig', './assets/pig.js')
     .addEntry('card', './assets/card.js')
     .addEntry('game', './assets/game.js')
+    .addEntry('library', './assets/library.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
