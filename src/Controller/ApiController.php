@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Traits\DeckSessionTrait;
+use App\Repository\LibraryRepository;
 
 class ApiController extends AbstractController
 {
@@ -162,6 +163,42 @@ class ApiController extends AbstractController
                     ],
                     'ended' => false,
                     'winner' => null
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ],
+            [
+                'title' => 'Visa alla böcker',
+                'description' => 'Returnerar alla böcker i biblioteket utan omslagsbilden.',
+                'method' => 'GET',
+                'path' => 'library/books',
+                'example' => 'library/books',
+                'response' => json_encode([
+                    
+                    [
+                        "id" => 7,
+                        "title" => "The Hired Girl",
+                        "isbn" => "9780763678180",
+                        "author" => "Laura Amy Schlitz"
+                    ],
+                    [
+                        "id" => 8,
+                        "title" => "A Breath of Scandal",
+                        "isbn" => "9780505527363",
+                        "author" => "Connie Mason"
+                    ]
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            ],
+            [
+                'title' => 'Sök bok med ISBN',
+                'description' => 'Returnerar en bok med angiven ISBN.',
+                'method' => 'GET',
+                'path' => 'library/books/{isbn}',
+                'example' => 'library/books/9780763678180',
+                'response' => json_encode([
+                    "id" => 7,
+                    "title" => "The Hired Girl",
+                    "isbn" => "9780763678180",
+                    "author" => "Laura Amy Schlitz",
+                    "img" => "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAAAAAAD/2wBDAAoHBwkHBgoJCAkLCwoMDxkQDw4ODx4WFxIZJCAmJSMgIyIuKjYp"
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             ]
         ];
@@ -352,5 +389,40 @@ class ApiController extends AbstractController
             'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         ]);
 
+    }
+
+    #[Route('/api/library/books', name: 'api_library_books')]
+    public function libraryBooks(
+        LibraryRepository $libraryRepository
+    ): JsonResponse
+    {
+        $books = $libraryRepository->fetchNoCover();
+
+        return $this->json($books, 200, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        ]);
+    }
+
+    #[Route('/api/library/books/{isbn<\d+>}', name: 'api_library_books_isbn')]
+    public function libraryBooksIsbn(
+        LibraryRepository $libraryRepository,
+        string $isbn
+    ): JsonResponse
+    {
+
+        $book = $libraryRepository->findByIsbn($isbn);
+
+        if (!$book) {
+            return $this->json([
+                'error' => 'Book not found',
+                'message' => 'No book found with the given ISBN.'
+            ], 404, [], [
+                'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+            ]);
+        }
+
+        return $this->json($book, 200, [], [
+            'json_encode_options' => JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        ]);
     }
 }
