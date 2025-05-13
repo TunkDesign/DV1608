@@ -135,7 +135,7 @@ final class LibraryController extends AbstractController
 
         if (!$book) {
             throw $this->createNotFoundException(
-                'No book found with id ' . $id
+                'No book found with id ' . $request->request->get('id')
             );
         }
 

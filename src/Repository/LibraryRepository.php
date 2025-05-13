@@ -19,15 +19,15 @@ class LibraryRepository extends ServiceEntityRepository
     /**
      * Fetch all books but without the image.
      *
-     * @return [][] Returns an array of arrays (i.e. a raw data set)
+     * @return array<array{ id: int, title: string, isbn: string, author: string }>
      */
     public function fetchNoCover(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT id, title, isbn, author FROM library
-        ';
+        SELECT id, title, isbn, author FROM library
+    ';
 
         $resultSet = $conn->executeQuery($sql);
 
@@ -37,16 +37,15 @@ class LibraryRepository extends ServiceEntityRepository
     /**
      * Fetch book by ISBN.
      *
-     * @return Library[] Returns an array of Library objects
+     * @param string $isbn
+     * @return Library|null Returns a Library object or null if not found
      */
-    public function findByIsbn($isbn): ?Library
+    public function findByIsbn(string $isbn): ?Library
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.isbn = :isbn')
             ->setParameter('isbn', $isbn)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-
 }
