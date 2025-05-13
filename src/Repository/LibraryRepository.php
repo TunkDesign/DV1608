@@ -18,7 +18,7 @@ class LibraryRepository extends ServiceEntityRepository
 
     /**
      * Fetch all books but without the image.
-     * 
+     *
      * @return [][] Returns an array of arrays (i.e. a raw data set)
      */
     public function fetchNoCover(): array
@@ -36,7 +36,7 @@ class LibraryRepository extends ServiceEntityRepository
 
     /**
      * Fetch book by ISBN.
-     * 
+     *
      * @return Library[] Returns an array of Library objects
      */
     public function findByIsbn($isbn): ?Library

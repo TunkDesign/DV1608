@@ -22,8 +22,7 @@ final class ProductController extends AbstractController
     #[Route('/product/create', name: 'product_create')]
     public function createProduct(
         ManagerRegistry $doctrine
-        ): Response
-    {
+    ): Response {
         $entityManager = $doctrine->getManager();
 
         $product = new Product();
@@ -33,7 +32,7 @@ final class ProductController extends AbstractController
         // tell Doctrine you want to (eventually) save the Product
         // (no queries yet)
         $entityManager->persist($product);
-        
+
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
@@ -43,8 +42,7 @@ final class ProductController extends AbstractController
     #[Route('/product/show', name: 'product_show_all')]
     public function showAllProduct(
         ProductRepository $productRepository,
-        ): Response
-    {
+    ): Response {
         $products = $productRepository->findAll();
 
         $response = $this->json($products);
@@ -59,10 +57,9 @@ final class ProductController extends AbstractController
     public function showProductById(
         ProductRepository $productRepository,
         int $id
-        ): Response
-    {
+    ): Response {
         $product = $productRepository->find($id);
-        
+
         return $this->json($product);
     }
 
@@ -70,8 +67,7 @@ final class ProductController extends AbstractController
     public function deleteProductById(
         ManagerRegistry $doctrine,
         int $id
-        ): Response
-    {
+    ): Response {
         $entityManager = $doctrine->getManager();
         $product = $entityManager->getRepository(Product::class)->find($id);
 
@@ -92,8 +88,7 @@ final class ProductController extends AbstractController
         ManagerRegistry $doctrine,
         int $id,
         int $value
-        ): Response
-    {
+    ): Response {
         $entityManager = $doctrine->getManager();
         $product = $entityManager->getRepository(Product::class)->find($id);
 
@@ -112,8 +107,7 @@ final class ProductController extends AbstractController
     #[Route('/product/view', name: 'product_view_all')]
     public function viewAllProduct(
         ProductRepository $productRepository,
-        ): Response
-    {
+    ): Response {
         $products = $productRepository->findAll();
 
         return $this->render('product/view.html.twig', [

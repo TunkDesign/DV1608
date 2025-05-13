@@ -73,7 +73,7 @@ final class LibraryController extends AbstractController
             'book' => $book,
         ]);
     }
-    
+
     #[Route('/library/edit', name: 'library_edit_post', methods: ['POST'])]
     public function library_edit_post(
         Request $request,
@@ -82,7 +82,7 @@ final class LibraryController extends AbstractController
     ): Response {
         $entityManager = $doctrine->getManager();
         $library = $entityManager->getRepository(Library::class)->find($request->request->get('id'));
-        
+
         $library->setTitle(htmlspecialchars($request->request->get('title'), ENT_QUOTES, 'UTF-8'));
         $library->setIsbn(htmlspecialchars($request->request->get('isbn'), ENT_QUOTES, 'UTF-8'));
         $library->setAuthor(htmlspecialchars($request->request->get('author'), ENT_QUOTES, 'UTF-8'));
@@ -117,14 +117,14 @@ final class LibraryController extends AbstractController
         LibraryRepository $libraryRepository,
         int $id
     ): Response {
-        
+
         $book = $libraryRepository->find($id);
 
         return $this->render('library/delete.html.twig', [
             'book' => $book,
         ]);
     }
-    
+
     #[Route('/library/delete', name: 'library_delete_post', methods: ['POST'])]
     public function library_delete_post(
         Request $request,

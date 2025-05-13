@@ -45,7 +45,7 @@ class Library
 
     public function getIsbn(): ?string
     {
-        
+
         return $this->isbn;
     }
 

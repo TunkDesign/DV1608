@@ -172,7 +172,7 @@ class ApiController extends AbstractController
                 'path' => 'library/books',
                 'example' => 'library/books',
                 'response' => json_encode([
-                    
+
                     [
                         "id" => 7,
                         "title" => "The Hired Girl",
@@ -394,8 +394,7 @@ class ApiController extends AbstractController
     #[Route('/api/library/books', name: 'api_library_books')]
     public function libraryBooks(
         LibraryRepository $libraryRepository
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $books = $libraryRepository->fetchNoCover();
 
         return $this->json($books, 200, [], [
@@ -407,8 +406,7 @@ class ApiController extends AbstractController
     public function libraryBooksIsbn(
         LibraryRepository $libraryRepository,
         string $isbn
-    ): JsonResponse
-    {
+    ): JsonResponse {
 
         $book = $libraryRepository->findByIsbn($isbn);
 
