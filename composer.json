@@ -100,7 +100,8 @@
         "phpdoc": "php tools/phpdoc/phpdoc.phar run -d ./src -t ./docs/api --config=tools/phpdoc/phpdoc.xml",
         "phpunit": [
             "php -dxdebug.mode=coverage bin/phpunit"
-        ]
+        ],
+        "phpmetrics": "tools/phpmetrics/vendor/bin/phpmetrics --config=tools/phpmetrics/phpmetrics.json"
 
     },
     "conflict": {
