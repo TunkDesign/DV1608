@@ -78,7 +78,7 @@ class Deck implements \JsonSerializable
             $values[] = $card->getValue();
         }
 
-        array_multisort($values, /** @scrutinizer ignore-type */ SORT_ASC, $cards);
+        array_multisort($values, 4, $cards);
 
         return $cards;
     }
