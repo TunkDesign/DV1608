@@ -11,7 +11,7 @@ class Deck implements \JsonSerializable
 
     /**
      * @param bool $graphic Whether or not to use graphic cards.
-     * @param list<array{value: int, suit: string}> $preloaded Cards to preload into the deck (optional).
+     * @param array[] $preloaded Cards to preload into the deck (optional), each with keys 'value' (int) and 'suit' (string).
      */
     public function __construct(bool $graphic = false, array $preloaded = [])
     {
@@ -78,8 +78,7 @@ class Deck implements \JsonSerializable
             $values[] = $card->getValue();
         }
 
-        /** @scrutinizer ignore-type */
-        array_multisort($values, SORT_ASC, $cards);
+        array_multisort($values, /** @scrutinizer ignore-type */ SORT_ASC, $cards);
 
         return $cards;
     }
