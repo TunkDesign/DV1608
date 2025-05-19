@@ -7,7 +7,7 @@ class TwentyOne
     private Deck $deck;
 
     /**
-     * @var list<Player>
+     * @var Player[]
      */
     private array $players = [];
 
@@ -99,7 +99,7 @@ class TwentyOne
     /**
      * Get all players.
      *
-     * @return list<Player>
+     * @return Player[]
      */
     public function getPlayers(): array
     {

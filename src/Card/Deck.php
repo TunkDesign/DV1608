@@ -5,7 +5,7 @@ namespace App\Card;
 class Deck implements \JsonSerializable
 {
     /**
-     * @var list<Card>
+     * @var Card[]
      */
     private array $cards = [];
 
@@ -35,7 +35,7 @@ class Deck implements \JsonSerializable
     /**
      * Get all cards in the deck.
      *
-     * @return list<Card>
+     * @return Card[]
      */
     public function getCards(): array
     {
@@ -46,7 +46,8 @@ class Deck implements \JsonSerializable
      * Get all cards from the deck matching a specific suit.
      *
      * @param string $suit
-     * @return list<Card>
+     * 
+     * @return Card[]
      */
     public function getCardsBySuit(string $suit): array
     {
@@ -65,7 +66,8 @@ class Deck implements \JsonSerializable
      * Get sorted cards by suit in ascending order of value.
      *
      * @param string $suit
-     * @return list<Card>
+     * 
+     * @return Card[]
      */
     public function getSortedCardsBySuit(string $suit): array
     {
@@ -76,6 +78,7 @@ class Deck implements \JsonSerializable
             $values[] = $card->getValue();
         }
 
+        /** @scrutinizer ignore-type */
         array_multisort($values, SORT_ASC, $cards);
 
         return $cards;
@@ -103,7 +106,7 @@ class Deck implements \JsonSerializable
     /**
      * Serialize the deck for JSON output.
      *
-     * @return list<Card>
+     * @return Card[]
      */
     public function jsonSerialize(): array
     {

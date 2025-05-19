@@ -5,7 +5,7 @@ namespace App\Card;
 class CardGraphic extends Card implements \JsonSerializable
 {
     /**
-     * @var array<string, list<string>>
+     * @var array<string, string[]>
      */
     private array $representations = [
         'spades' => [

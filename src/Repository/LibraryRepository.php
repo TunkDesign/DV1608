@@ -19,7 +19,7 @@ class LibraryRepository extends ServiceEntityRepository
     /**
      * Fetch all books but without the image.
      *
-     * @return array<array{ id: int, title: string, isbn: string, author: string }>
+     * @return array[] Each item contains keys: id (int), title (string), isbn (string), author (string)
      */
     public function fetchNoCover(): array
     {

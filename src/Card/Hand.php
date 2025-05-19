@@ -5,7 +5,7 @@ namespace App\Card;
 class Hand
 {
     /**
-     * @var list<CardGraphic>
+     * @var CardGraphic[]
      */
     private array $cards = [];
 
@@ -22,7 +22,7 @@ class Hand
     /**
      * Get all cards in the hand.
      *
-     * @return list<CardGraphic>
+     * @return CardGraphic[]
      */
     public function getCards(): array
     {
