@@ -11,7 +11,7 @@ class Deck implements \JsonSerializable
 
     /**
      * @param bool $graphic Whether or not to use graphic cards.
-     * @param array[] $preloaded Cards to preload into the deck (optional), each with keys 'value' (int) and 'suit' (string).
+     * @param array<int, array{value: int, suit: string}> $preloaded Cards to preload into the deck (optional).
      */
     public function __construct(bool $graphic = false, array $preloaded = [])
     {
@@ -46,7 +46,7 @@ class Deck implements \JsonSerializable
      * Get all cards from the deck matching a specific suit.
      *
      * @param string $suit
-     *
+     * 
      * @return Card[]
      */
     public function getCardsBySuit(string $suit): array
@@ -66,7 +66,7 @@ class Deck implements \JsonSerializable
      * Get sorted cards by suit in ascending order of value.
      *
      * @param string $suit
-     *
+     * 
      * @return Card[]
      */
     public function getSortedCardsBySuit(string $suit): array
