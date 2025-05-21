@@ -1,5 +1,13 @@
 ![DV1608 Symfony Project](https://i.imgur.com/WQiomwj.png)
 
+<center>
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/TunkDesign/DV1608/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/TunkDesign/DV1608/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/build.png?b=main)](https://scrutinizer-ci.com/g/TunkDesign/DV1608/build-status/main)
+</center>
+<br>
+
 # DV1608 – Symfony Website
 
 This is a school project for the course DV1608. The application is built using Symfony and follows the MVC architecture. It emphasizes clean structure, security, and responsive design.
