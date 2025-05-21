@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metrics-analys</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #34495e;
+      --accent: #3498db;
+      --light: #ecf0f1;
+      --border: #dcdcdc;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #fff;
+      color: #2c3e50;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.6;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h1, h2 {
+      color: var(--primary);
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    article {
+      background-color: var(--light);
+      border-left: 4px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 4px;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--accent);
+    }
+
+    code {
+      background: #f3f3f3;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: Consolas, monospace;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+    <section>
+        <h1>Introduktion</h1>
+        <p>Här går jag igenom olika sätt att mäta och analysera kodkvalitet. Här försöker vi att få en bättre bild av hur koden är att underhålla och vidareutveckla.</p>
+
+        <article>
+            <h2>Codestyle</h2>
+            <p>Codestyle handlar om hur koden faktiskt ser ut, alltså hur den är skriven och formaterad. Det påverkar inte direkt hur koden körs, men har stor betydelse för hur lätt den är att läsa och förstå.</p>
+            <p>I mitt fall så styrs det mesta av våra lints, som automatiskt säger till om något bryter mot reglerna.</p>
+            <p>Exempel på codestyle-regler kan vara:</p>
+            <ul>
+                <li>Maximal radlängd på 80 tecken.</li>
+                <li>Fyra mellanslag för indentering.</li>
+                <li>Inga onödiga mellanslag runt operatorer.</li>
+                <li>Maximal längd på metoder på 100 rader.</li>
+            </ul>
+
+            <p>Att hålla sig till en tydlig och konsekvent stil gör stor skillnad, särskilt när flera jobbar i samma kodbas. Det blir lättare att läsa, förstå och underhålla koden för alla.</p>
+        </article>
+
+        <article>
+            <h2>Coverage</h2>
+            <p>Coverage handlar om hur stor del av koden som är testad med enhetstester. Ju mer kod som är täckt, desto större chans är det att upptäcka buggar tidigt och kunna göra ändringar utan att något oväntat går sönder.</p>
+            <p>Hög täckning gör det enklare att refaktorera och bygga vidare på systemet.</p>
+            <p>Just nu ligger testtäckningen för hela projektet på det ganska låga 16%, vilket är något som definitivt kan förbättras.</p>
+            <img src="{{ asset('images/currentcoverage.png') }}" alt="Bild på stundens täckning av enhetstester.">
+            <p>Går man djupare så ser man att vissa delar sticker ut positivt. Till exempel har mina Card-klasser hela 94% täckning, vilket är riktigt bra.</p>
+            <img src="{{ asset('images/cardcoverage.png') }}" alt="Bild på stundens täckning av enhetstester.">
+            <p>Täckningen är ojämn och vissa delar är väl testade, medan andra saknar tester helt. Jag skulle kunna vinna ganska mycket på att göra enhetstester på resterande 84%.</p>
+            <hr>
+            <p>Nedan är aktuell coverage-status</p>
+            <img src="https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/coverage.png?b=main" alt="Scrutinizer Coverage" srcset="">
+
+        </article>
+
+        <article>
+            <h2>Complexity</h2>
+            <p>Complexity handlar om hur komplicerad koden är att förstå, testa och underhålla. Ju mer komplex en metod eller klass är, desto svårare blir det att följa koden och upptäcka fel.</p>
+            <p>Det finns flera sätt att mäta komplexitet. De två vanligaste är:</p>
+            <ul>
+                <li>Cyclomatic complexity: Räknar antalet oberoende vägar genom en metod som påverkar flödet.</li>
+                <li>Halstead complexity: Räknar hur många unika operatorer och operander som används i koden.</li>
+            </ul>
+            <p>Att ha låg komplexitet gör koden lättare att förstå och underhålla.</p>
+            <p>Nedan är detta projektets aktuella medelvärde.</p>
+            <img src="{{ asset('images/avgcomplexity.png') }}" alt="Medelvärde på Komplexiteten" srcset="">
+            <p>4.17 är ett <i>okej</i> medelvärde.</p>
+        </article>
+
+        <article>
+            <h2>Cohesion</h2>
+            <p>Cohesion handlar om hur väl olika delar av koden hänger ihop. Låg kohesion innebär att en klass eller modul har ett tydligt syfte och att dess metoder och variabler är relaterade till detta syfte.</p>
+            <p>Exempel på kohesionsmått kan vara:</p>
+            <ul>
+                <li>Functional cohesion: Alla metoder och variabler bidrar till att utföra en tydlig, gemensam uppgift.</li>
+                <li>Communicational cohesion: Metoder jobbar med samma data eller objekt.</li>
+            </ul>
+            <p>Att ha låg kohesion gör koden mer modulär och lättare att förstå.</p>
+            <p>Detta projekt har ett LCOM medelvärde på 1.54:</p>
+            
+            <img src="{{ asset('images/avglcom.png') }}" alt="Medelvärde på Cohesion" srcset="">
+        </article>
+
+        <article>
+            <h2>Coupling</h2>
+            <p><b>Afferent coupling (AC)</b> beskriver hur många andra klasser som påverkas av den aktuella klassen, alltså hur många utgående beroenden den har. En klass med högt afferent coupling-värde är ofta starkt knuten till många andra delar av systemet, vilket kan göra den känslig för förändringar i de beroende klasserna.</p>
+            <p><b>Efferent coupling (EC)</b> å andra sidan visar hur många andra klasser som påverkar den aktuella klassen, alltså hur många inkommande beroenden som finns. Ett högt värde här antyder att många andra klasser är beroende av denna klass, vilket kan göra den svår att förändra utan att påverka resten av systemet.</p>
+            <p>Båda typerna av coupling säger något viktigt om hur beroenden ser ut i koden. Höga värden kan vara en varningssignal på att klassen är för centraliserad eller för tightly coupled, vilket i sin tur påverkar kodens underhållbarhet och flexibilitet negativt.</p>
+        </article>
+
+        <article>
+            <h2>CRAP</h2>
+            <p>CRAP står för <i>Change Risk Analysis and Prediction</i> och är ett mått som kombinerar kodens komplexitet med hur väl den är testad. Tanken är att identifiera vilka delar av koden som är mer riskfyllda att ändra.</p>
+            <p>En hög CRAP-score betyder att koden både är svår att förstå och dåligt täckt av tester, vilket är en dålig kombination. Dessa funktioner kan lätt gå sönder vid förändringar och är därför bra att titta lite extra på för refaktorisering eller utökad testning.</p>
+            <p>Att använda CRAP som verktyg gör det enklare att prioritera var man bör lägga mest fokus när man ska förbättra kodbasen, både ur testnings syfte och när det gäller underhåll.</p>
+        </article>
+    </section>
+
+    <section>
+        <h1>PHPMetrics</h1>
+
+        <article>
+            <h2>Överblick</h2>
+            <p>En snabb överblick av PHPMetrics visar följande statistic.</p>
+            <img src="{{ asset('images/phpmetricsanalysis.png') }}" alt="PHPMetrics" srcset="">
+        </article>
+
+        <article>
+            <h2>Flaskhalsar och svaga punkter</h2>
+            <p>PHPMetrics kan visa flaskhalsar och svaga punkter i koden. Det kan vara klasser eller metoder som är för komplexa eller har för många beroenden.</p>
+
+            <img src="{{ asset('images/complexityoverview.png') }}" alt="Komplexitet, överblick.">
+
+            <p>Nedan är några tydliga flaskhalsar som skulle kunnat må bättre:</p>
+            <ol>
+                <li>
+                    <b>App\Card\TwentyOne</b>
+                    <ul>
+                        <li><b>Weighted Method Count</b>: <i>29</i></li>
+                        <li><b>Max cyclomatic complexity</b>: <i>20</i></li>
+                        <li><b>Systemkomplexitet</b>: <i>256.78</i></li>
+                        <li><b>Bug Risk</b>: <i>0.23</i></li>
+                        <li><b>Defekter</b>: <i>1.84</i></li>
+                        <li><b>Tester</b>: <i>11</i></li>
+                    </ul>
+                </li>
+                <li>
+                    <b>App\Controller\ApiController</b>
+                    <ul>
+                        <li><b>Weighted Method Count</b>: <i>18</i></li>
+                        <li><b>Max cyclomatic complexity</b>: <i>10</i></li>
+                        <li><b>Systemkomplexitet</b>: <i>400.57</i></li>
+                        <li><b>Bug Risk</b>: <i>1.18</i></li>
+                        <li><b>Defekter</b>: <i>0.87</i></li>
+                        <li><b>Tester</b>: <i>0</i></li>
+                    </ul>
+                </li>
+                <li>
+                    <b>App\Controller\DiceGameController</b>
+                    <ul>
+                        <li><b>Weighted Method Count</b>: <i>17</i></li>
+                        <li><b>Max cyclomatic complexity</b>: <i>9</i></li>
+                        <li><b>Systemkomplexitet</b>: <i>121.81</i></li>
+                        <li><b>Bug Risk</b>: <i>0.47</i></li>
+                        <li><b>Defekter</b>: <i>0.66</i></li>
+                        <li><b>Tester</b>: <i>0</i></li>
+                    </ul>
+                </li>
+            </ol>
+            <p>Dessa klasser skulle kunnas fördelas ner i flera mindre klasser för att öka underhållbarheten och göra dom lättare att läsa.</p>
+        </article>
+    </section>
+
+    <section>
+        <h1>Scrutinizer</h1>
+
+        <article style="text-align: center;">
+            <a href="https://scrutinizer-ci.com/g/TunkDesign/DV1608/?branch=main"><img src="https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/quality-score.png?b=main" alt="Scrutinizer Coverage"></a>
+            <a href="https://scrutinizer-ci.com/g/TunkDesign/DV1608/?branch=main"><img src="https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/coverage.png?b=main" alt="Coverage"></a>
+            <a href="https://scrutinizer-ci.com/g/TunkDesign/DV1608/build-status/main"><img src="https://scrutinizer-ci.com/g/TunkDesign/DV1608/badges/build.png?b=main" alt="Build status"></a>
+        </article>
+
+        <article>
+            <h2>Flaskhalsar och svaga punkter</h2>
+            <p>Scrutinizer kan också visa flaskhalsar och svaga punkter i koden. Det kan vara klasser eller metoder som är för komplexa eller har för många beroenden.</p>
+
+            <img src="{{ asset('images/scrutinizeroverview.png') }}" alt="Komplexitet, överblick.">
+
+            <p>Nedan är några flaskhalsar som skulle kunnas må bättre:</p>
+            <ol>
+                <li>
+                    <b>App\Card\TwentyOne</b>
+                    <ul>
+                        <li><b>Size</b>: <i>214</i></li>
+                        <li><b>Complexity</b>: <i>32</i></li>
+                        <li><b>Coverage</b>: <i>90.67%</i></li>
+                    </ul>
+                </li>
+                <li>
+                    <b>App\Controller\ApiController</b>
+                    <ul>
+                        <li><b>Size</b>: <i>409</i></li>
+                        <li><b>Complexity</b>: <i>18</i></li>
+                        <li><b>Coverage</b>: <i>0%</i></li>
+                    </ul>
+                </li>
+                <li>
+                    <b>App\Controller\DiceGameController</b>
+                    <ul>
+                        <li><b>Size</b>: <i>164</i></li>
+                        <li><b>Complexity</b>: <i>17</i></li>
+                        <li><b>Coverage</b>: <i>0%</i></li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>Eftersom både PHPMetrics och Scrutinizer nämner samma filer, så säger det mig att dessa skulle kunnas förbättras ganska mycket. Jag vet att mycket av koden skulle kunnas snyggas till och flyttas till Traits etc.</p>
+        </article>
+
+        <article>
+            <h2>Koppling till det 6C:na</h2>
+
+            <ol>
+                <li>
+                    <b>App\Card\TwentyOne</b>
+                    <ul>
+                        <li>
+                            <b>Codestyle</b><br>
+                            Formatteringen och namngivningen känns bra. Det är lätt att läsa och förstå vad som händer i koden.
+                        </li>
+                        <li>
+                            <b>Coverage</b><br>
+                            Hög coverage, 90.32%. Nästan komplett coverage. En metod saknar coverage. Och två är nästan 100% täckta.
+                        </li>
+                        <li>
+                            <b>Complexity</b><br>
+                            Mycket hög, 20, enligt PHPMetrics. Svårt att tolka denna siffra, då jag bara anser att det är två, kanske tre, metoder som skulle kunnas göras lite bättre.
+                        </li>
+                        <li>
+                            <b>Cohesion</b><br>
+                            Låg, 1, enlight PHPMetrics. Jag anser att det är en bra sammanhållning i klassen. Den gör en sak, och den gör det bra.
+                        </li>
+                        <li>
+                            <b>Coupling</b><br>
+                            Den används bara av en klass, vilket ger en AC på 1, samt att den bara använder två klasser, vilket ger en EC på 2. Detta är bra siffror.
+                        </li>
+                        <li>
+                            <b>CRAP</b><br>
+                            Baserat på statistiken ovan så har den en hög riskzon.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <b>App\Controller\ApiController</b>
+                    <ul>
+                        <li>
+                            <b>Codestyle</b><br>
+                            Relativt svårtläst. Det är en stor klass med mycket kod som gör att det är svårt att se vad som händer. Mycket som skulle kunnas flyttas runt till andra klasser och metoder.
+                        </li>
+                        <li>
+                            <b>Coverage</b><br>
+                            Ingen coverage. Skulle behöva skrivas tester för att se vad som händer i klassen.
+                        </li>
+                        <li>
+                            <b>Complexity</b><br>
+                            Mycket hög på alla fronter. Helt förståeligt.
+                        </li>
+                        <li>
+                            <b>Cohesion</b><br>
+                            Hög cohesion, 3. Kunde ha varit mycket bättre.
+                        </li>
+                        <li>
+                            <b>Coupling</b><br>
+                            Ingen AC, men en hög EC på 7. Skulle behövas tester för att se vad som händer i klassen om andra klasser ändras.
+                        </li>
+                        <li>
+                            <b>CRAP</b><br>
+                            Mycket hög riskzon. Utan tester är varje ändring en risk.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <b>App\Controller\DiceGameController</b>
+                    <ul>
+                        <li>
+                            <b>Codestyle</b><br>
+                            En tidigt skriven klass som kunde ha varit mycket bättre. Håller rätt standard men mycket som kanske skulle kunnats göra i en klass istället.
+                        </li>
+                        <li>
+                            <b>Coverage</b><br>
+                            Ingen coverage. Skulle behöva skrivas tester för att se vad som händer i klassen.
+                        </li>
+                        <li>
+                            <b>Complexity</b><br>
+                            Relativt hög. Relativt svårtläst.
+                        </li>
+                        <li>
+                            <b>Cohesion</b><br>
+                            Relativt låg, 2. Klassen har ett tydligt syfte, men skulle kunnas förbättras.
+                        </li>
+                        <li>
+                            <b>Coupling</b><br>
+                            Ingen AC, men en hög EC på 8. Skulle behövas tester för att se vad som händer i klassen om andra klasser ändras.
+                        </li>
+                        <li>
+                            <b>CRAP</b><br>
+                            I riskzonen på grund av ingen coverage. Utan tester är varje ändring en risk.
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+        </article>
+    </section>
+
+    <section>
+        <h1>Förbättringar</h1>
+        <article>
+            <h2>Tankar</h2>
+            <p>
+                Jag har valt att gå igenom de olika issues som Scrutinizer har påpekat, samt gjort ett aktivt val att inte gå igenom PHPMetrics, då jag anser att Scrutinizer ger mig mer relevant information just för detta projekt.
+            </p>
+            <p>
+                Koden har redan en "Very Good" rating på 9.96 i Scrutinizer, vilket är bra. Samtidigt som de visas 13 "Issues" som skulle kunna åtgärdas.
+            </p>
+            <p>
+                Nedan är en bild på de olika issues som har påpekats.
+            </p>
+
+            <img src="{{ asset('images/scrutinizerissues.png') }}" alt="Issues, överblick.">
+            
+            <p>
+                Om jag skulle gissa så skulle kodens rating kanske att öka?
+            </p>
+        </article>
+
+        <article>
+            <h2>Ändringar</h2>
+            <p>Jag lyckades med att få till alla förutom två fel. Nedan visas en överblick.</p>
+            <img src="{{ asset('images/scrutinizerissuesfixed.png') }}" alt="Issues, överblick.">
+            <p>Dessa fel går inte att göra så mycket åt, eller åtminstone har jag inte expertisen att göra det.</p>
+            <p>
+                Ena felet är i Kernel.php, där det klagar på att MicroKernelTrait kräver vissa egenskaper som inte tillhandahålls av klassen. Detta är en del av Symfony och jag har ingen aning om hur jag skulle kunna åtgärda detta. Kan eventuellt vara en inkompatibilitet med PHP 8.3.14.
+            </p>
+            <img src="{{ asset('images/scrutinizerissueskernel.png') }}" alt="Issues, överblick.">
+            <p>
+                Det andra felet är i Deck.php och något som har med Scrutinizer att göra. Det är en del av deras analysverktyg och jag har ingen aning om hur jag skulle kunna åtgärda detta. Den verkar inte tycka om SORT_ASC, och ger ett sätt att ignorera detta på, men detta funkar inte heller.
+            </p>
+            <img src="{{ asset('images/scrutinizerissuesdeck.png') }}" alt="Issues, överblick.">
+        </article>
+
+        <article>
+            <h2>Resultat</h2>
+            <p>Om man går tillbaka till mina tankar om ändringarna, redan innan jag gjorde dom så gissade jag på att kodkvalitetsindexet skulle bli högre. Detta var inte resultatet.</p>
+            <p>
+                Förutom att jag fick ner antalet "Issues" så hände inte så mycket mer än att jag fick en kodbas som är mycket bättre.
+            </p>
+        </article>
+    </section>
+
+    <section>
+        <h1>Diskussion</h1>
+        <article>
+            <p>
+                Att analysera kodkvalitet med hjälp av mätvärden som de 6:Cna ger ett bra underlag för att förstå hur koden mår, både tekniskt och strukturellt. Det visar tydligt var svagheterna finns och hjälper till att prioritera vad som bör förbättras.
+            </p>
+            <p>
+                Till en början kändes det faktiskt ganska överväldigande med alla dessa olika former av mått och visualiseringar. Det var mycket information på en gång, och det tog lite tid att förstå vad som faktiskt var relevant och vad som bara skapade brus. Men ju mer jag jobbade mig in i det, desto mer kan jag inse värdet av att kunna se mönster i datan, samt att hitta riktiga flaskhalsar i koden.
+            </p>
+            <p>
+                Man kan absolut jobba aktivt med kodkvalitet och clean code på det här sättet. Det ger en bra grund att stå på, särskilt i större projekt eller när koden ska leva länge. Med fördelar som: färre buggar, enklare vidareutveckling och bättre samarbete i team. En möjlig nackdel är att man riskerar att fastna i mätvärden och "jaga siffror" istället för att tänka på vad som faktiskt förbättrar kodens läsbarhet och struktur i praktiken.
+            </p>
+            <p>
+                Utöver analysverktyg som PHPMetrics och Scrutinizer finns det andra sätt att arbeta mot clean code, som till exempel genom kodgranskningar, konsekvent kodstandard och regelbunden refaktorisering. Det viktiga är att man hela tiden har som mål att skriva kod som är enkel att förstå, testa och underhålla. Både för en själv och för andra.
+            </p>
+        </article>
+    </section>
+</body>
+</html>
