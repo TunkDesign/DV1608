@@ -46,7 +46,7 @@ class Deck implements \JsonSerializable
      * Get all cards from the deck matching a specific suit.
      *
      * @param string $suit
-     * 
+     *
      * @return Card[]
      */
     public function getCardsBySuit(string $suit): array
@@ -66,7 +66,7 @@ class Deck implements \JsonSerializable
      * Get sorted cards by suit in ascending order of value.
      *
      * @param string $suit
-     * 
+     *
      * @return Card[]
      */
     public function getSortedCardsBySuit(string $suit): array
