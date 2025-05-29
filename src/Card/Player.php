@@ -2,6 +2,19 @@
 
 namespace App\Card;
 
+use App\Card\HandEvaluator;
+use App\Card\Rule\{
+    RoyalFlushRule,
+    StraightFlushRule,
+    FourOfAKindRule,
+    FullHouseRule,
+    FlushRule,
+    StraightRule,
+    ThreeOfAKindRule,
+    TwoPairRule,
+    OnePairRule,
+};
+
 class Player
 {
     /**
@@ -58,6 +71,23 @@ class Player
     public function getHand(): Hand
     {
         return $this->hand;
+    }
+
+    public function getPlayHand(): string
+    {
+        $evaluator = new HandEvaluator([
+            new RoyalFlushRule(),
+            new StraightFlushRule(),
+            new FourOfAKindRule(),
+            new FullHouseRule(),
+            new FlushRule(),
+            new StraightRule(),
+            new ThreeOfAKindRule(),
+            new TwoPairRule(),
+            new OnePairRule()
+        ]);
+
+        return $evaluator->evaluate($this->hand);
     }
 
     /**
@@ -141,4 +171,6 @@ class Player
     {
         return $this->active;
     }
+
+    public function makeMove(Poker $game, Player $player): void {}
 }
