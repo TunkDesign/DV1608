@@ -2,12 +2,12 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for C:\Users\Karl\Dropbox\Skoluppgifter\Universitet\2025\Webbteknologier\mvc\report\src\Repository</title>
+  <title>Dashboard for C:\Users\Karl\Dropbox\Skoluppgifter\Universitet\2025\Webbteknologier\mvc\report\src\Card\Rule</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../_css/bootstrap.min.css?v=9.2.32" rel="stylesheet" type="text/css">
-  <link href="../_css/nv.d3.min.css?v=9.2.32" rel="stylesheet" type="text/css">
-  <link href="../_css/style.css?v=9.2.32" rel="stylesheet" type="text/css">
-  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+  <link href="../../_css/bootstrap.min.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/nv.d3.min.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/style.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
   <header>
@@ -16,8 +16,9 @@
      <div class="col-md-12">
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="../index.html">C:\Users\Karl\Dropbox\Skoluppgifter\Universitet\2025\Webbteknologier\mvc\report\src</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Repository</a></li>
+         <li class="breadcrumb-item"><a href="../../index.html">C:\Users\Karl\Dropbox\Skoluppgifter\Universitet\2025\Webbteknologier\mvc\report\src</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">Card</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Rule</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -58,7 +59,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="LibraryRepository.php.html#12">App\Repository\LibraryRepository</a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -112,9 +112,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="LibraryRepository.php.html#14"><abbr title="App\Repository\LibraryRepository::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="LibraryRepository.php.html#24"><abbr title="App\Repository\LibraryRepository::fetchNoCover">fetchNoCover</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="LibraryRepository.php.html#43"><abbr title="App\Repository\LibraryRepository::findByIsbn">findByIsbn</abbr></a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -144,9 +141,9 @@
     </p>
    </footer>
   </div>
-  <script src="../_js/jquery.min.js?v=9.2.32" type="text/javascript"></script>
-  <script src="../_js/d3.min.js?v=9.2.32" type="text/javascript"></script>
-  <script src="../_js/nv.d3.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/jquery.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/d3.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/nv.d3.min.js?v=9.2.32" type="text/javascript"></script>
   <script type="text/javascript">
 $(document).ready(function() {
   nv.addGraph(function() {
@@ -159,7 +156,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,10], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -177,7 +174,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([3,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,20], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -227,7 +224,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[0,3,"<a href=\"LibraryRepository.php.html#12\">App\\Repository\\LibraryRepository<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,3,"<a href=\"FlushRule.php.html#8\">App\\Card\\Rule\\FlushRule<\/a>"],[100,3,"<a href=\"FourOfAKindRule.php.html#8\">App\\Card\\Rule\\FourOfAKindRule<\/a>"],[100,4,"<a href=\"FullHouseRule.php.html#8\">App\\Card\\Rule\\FullHouseRule<\/a>"],[100,2,"<a href=\"HighCardRule.php.html#8\">App\\Card\\Rule\\HighCardRule<\/a>"],[100,3,"<a href=\"OnePairRule.php.html#8\">App\\Card\\Rule\\OnePairRule<\/a>"],[100,5,"<a href=\"RoyalFlushRule.php.html#8\">App\\Card\\Rule\\RoyalFlushRule<\/a>"],[100,5,"<a href=\"StraightFlushRule.php.html#8\">App\\Card\\Rule\\StraightFlushRule<\/a>"],[100,4,"<a href=\"StraightRule.php.html#8\">App\\Card\\Rule\\StraightRule<\/a>"],[100,3,"<a href=\"ThreeOfAKindRule.php.html#8\">App\\Card\\Rule\\ThreeOfAKindRule<\/a>"],[100,5,"<a href=\"TwoPairRule.php.html#8\">App\\Card\\Rule\\TwoPairRule<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -251,7 +248,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[0,1,"<a href=\"LibraryRepository.php.html#14\">App\\Repository\\LibraryRepository::__construct<\/a>"],[0,1,"<a href=\"LibraryRepository.php.html#24\">App\\Repository\\LibraryRepository::fetchNoCover<\/a>"],[0,1,"<a href=\"LibraryRepository.php.html#43\">App\\Repository\\LibraryRepository::findByIsbn<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,2,"<a href=\"FlushRule.php.html#10\">App\\Card\\Rule\\FlushRule::matches<\/a>"],[100,1,"<a href=\"FlushRule.php.html#20\">App\\Card\\Rule\\FlushRule::getName<\/a>"],[100,2,"<a href=\"FourOfAKindRule.php.html#10\">App\\Card\\Rule\\FourOfAKindRule::matches<\/a>"],[100,1,"<a href=\"FourOfAKindRule.php.html#21\">App\\Card\\Rule\\FourOfAKindRule::getName<\/a>"],[100,3,"<a href=\"FullHouseRule.php.html#10\">App\\Card\\Rule\\FullHouseRule::matches<\/a>"],[100,1,"<a href=\"FullHouseRule.php.html#21\">App\\Card\\Rule\\FullHouseRule::getName<\/a>"],[100,1,"<a href=\"HighCardRule.php.html#10\">App\\Card\\Rule\\HighCardRule::matches<\/a>"],[100,1,"<a href=\"HighCardRule.php.html#15\">App\\Card\\Rule\\HighCardRule::getName<\/a>"],[100,2,"<a href=\"OnePairRule.php.html#10\">App\\Card\\Rule\\OnePairRule::matches<\/a>"],[100,1,"<a href=\"OnePairRule.php.html#21\">App\\Card\\Rule\\OnePairRule::getName<\/a>"],[100,4,"<a href=\"RoyalFlushRule.php.html#10\">App\\Card\\Rule\\RoyalFlushRule::matches<\/a>"],[100,1,"<a href=\"RoyalFlushRule.php.html#32\">App\\Card\\Rule\\RoyalFlushRule::getName<\/a>"],[100,4,"<a href=\"StraightFlushRule.php.html#10\">App\\Card\\Rule\\StraightFlushRule::matches<\/a>"],[100,1,"<a href=\"StraightFlushRule.php.html#28\">App\\Card\\Rule\\StraightFlushRule::getName<\/a>"],[100,3,"<a href=\"StraightRule.php.html#10\">App\\Card\\Rule\\StraightRule::matches<\/a>"],[100,1,"<a href=\"StraightRule.php.html#21\">App\\Card\\Rule\\StraightRule::getName<\/a>"],[100,2,"<a href=\"ThreeOfAKindRule.php.html#10\">App\\Card\\Rule\\ThreeOfAKindRule::matches<\/a>"],[100,1,"<a href=\"ThreeOfAKindRule.php.html#21\">App\\Card\\Rule\\ThreeOfAKindRule::getName<\/a>"],[100,4,"<a href=\"TwoPairRule.php.html#10\">App\\Card\\Rule\\TwoPairRule::matches<\/a>"],[100,1,"<a href=\"TwoPairRule.php.html#28\">App\\Card\\Rule\\TwoPairRule::getName<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
