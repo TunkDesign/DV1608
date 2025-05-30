@@ -1,0 +1,317 @@
+body {
+    margin: 0;
+    background: linear-gradient(#0d0d0d, #1a1a1a);
+    color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #111;
+    border-bottom: 2px solid #333;
+    padding: 1rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    color: #e63946;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.navbar .nav-links a {
+    color: #ccc;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 5px;
+    transition: background 0.2s ease;
+}
+
+.navbar .nav-links a.active,
+.navbar .nav-links a:hover {
+    background-color: #e63946;
+    color: #fff;
+}
+
+main {
+    flex: 1;
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #f1faee;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    color: #a8dadc;
+    margin-top: 2rem;
+}
+
+.start-button {
+    background-color: #2a9d8f;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1rem;
+}
+
+.start-button:hover {
+    background-color: #21867a;
+}
+
+form#gamestart {
+    background: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+form#gamestart label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #f1faee;
+}
+
+form#gamestart input[type="text"] {
+    width: 95%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #1b1b1b;
+    color: #fff;
+}
+
+form#gamestart input[type="submit"] {
+    background-color: #e63946;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+form#gamestart input[type="submit"]:hover {
+    background-color: #d62839;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.api-btn,
+#start-game-form button,
+#player-bet-btn,
+#exchange-btn {
+    background-color: #2a9d8f;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    margin: 0.3rem 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.api-btn:hover,
+#start-game-form button:hover,
+#player-bet-btn:hover,
+#exchange-btn:hover {
+    background-color: #21867a;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 0.5rem;
+    margin: 0.2rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: #222;
+    color: white;
+}
+
+article.gameboard {
+    background-color: #004334;
+    display: grid;
+    border: 50px solid #5b3f2b;
+    border-radius: 20%;
+    color: #fff;
+    padding: 100px;
+    max-width: 1200px;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: 300px 300px;
+    grid-auto-rows: 300px;
+    margin: auto;
+}
+
+article.gameboard > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.card-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 8rem;
+    width: 6rem;
+    height: 8.5rem;
+    background-color: #fff;
+    color: #000;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    line-height: 9rem;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
+
+.card.red {
+    color: crimson;
+}
+
+.card-stack {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.player-card h4 {
+    text-align: center;
+}
+
+.player-card .card-row-hidden .card:not(:first-child) {
+    margin-left: -80px;
+}
+
+.player-card .card-row-hidden .card:hover,
+.player-card .card-stack .card:hover {
+    transform: scale(1);
+    cursor: default;
+}
+
+.card-stack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100%;
+}
+.card-stack .pile {
+    margin-left: -30px;
+    width: 100%;
+    height: 350px;
+    position: relative;
+}
+.card-stack .pile .card { position: absolute; }
+.card-stack .pile .card:nth-child(1) { transform: rotate(-10deg); }
+.card-stack .pile .card:nth-child(2) { transform: rotate(10deg); }
+.card-stack .pile .card:nth-child(3) { transform: rotate(5deg); }
+.card-stack .pile .card:nth-child(4) { transform: rotate(-6deg); }
+
+.card.selected {
+    border: 2px solid yellow;
+    transform: translateY(-10px);
+}
+.winner-player-card {
+    border: 4px solid gold;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 25px gold;
+    animation: winnerPulse 1.5s infinite alternate;
+}
+.winner-crown-absolute {
+    font-size: 1.4em;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+@keyframes winnerPulse {
+    0% { box-shadow: 0 0 10px gold; }
+    100% { box-shadow: 0 0 30px gold; }
+}
+#overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+#exchange-ui {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+}
+#exchange-button {
+    padding: 12px 24px;
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.betting-ui {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.betting-ui input {
+    width: 100px;
+    padding: 6px;
+    border-radius: 4px;
+    border: none;
+    margin-right: 8px;
+}
+
+.betting-ui button {
+    padding: 6px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

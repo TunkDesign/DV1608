@@ -1,0 +1,92 @@
+{% extends "project/base.html.twig" %}
+
+{% block title %}API{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Poker API Playground</h1>
+    <p>This is a developer view to explore and interact with the available JSON API endpoints in the Poker project.</p>
+
+    <div class="alert" style="background-color: #333; color: #ffcc00; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+        Most endpoints require an active game session. To quickly start a game session use the second endpoint called "Start New Game (POST)" before calling any other endpoint.
+    </div>
+
+    <section>
+        <h2>Available Endpoints</h2>
+        <ul>
+            <li><button class="api-btn" data-url="/api/poker/reset">Reset Game (GET)</button></li>
+            <li>
+                <form id="start-game-form">
+                    <input type="text" name="name" placeholder="Your name" required />
+                    <button type="submit">Start New Game (POST)</button>
+                </form>
+            </li>
+            <li><button class="api-btn" data-url="{{ path('api_poker') }}">Game Info (GET)</button></li>
+            <li><button class="api-btn" data-url="{{ path('api_poker_state') }}">Game State (GET)</button></li>
+            <li><button class="api-btn" data-url="{{ path('api_poker_draw') }}">Draw Card (GET)</button></li>
+            <li><button class="api-btn" data-url="{{ path('api_poker_showdown') }}">Showdown (GET)</button></li>
+            <li><button class="api-btn" data-url="{{ path('api_poker_winner') }}">Get Winner (GET)</button></li>
+            <li><button class="api-btn" data-url="{{ path('api_poker_bet_computer') }}">Computer Bets (GET)</button></li>
+            <li>
+                <button id="player-bet-btn">Player Bet (POST)</button>
+                <input type="number" id="player-bet-amount" placeholder="Amount" min="1" />
+            </li>
+            <li>
+                <button id="exchange-btn">Exchange Cards (POST)</button>
+                <input type="text" id="exchange-indices" placeholder="Indices e.g. 0,2,4" />
+            </li>
+        </ul>
+    </section>
+
+    <section style="margin-top: 2rem;">
+        <h2>Response</h2>
+        <pre id="api-response" style="background:#111; color:#0f0; padding:1rem; border-radius:8px; max-height:400px; overflow:auto;">Waiting for response...</pre>
+    </section>
+</div>
+
+<script>
+document.querySelectorAll('.api-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const url = btn.getAttribute('data-url');
+        const response = await fetch(url);
+        const data = await response.json();
+        document.getElementById('api-response').textContent = JSON.stringify(data, null, 2);
+    });
+});
+
+document.getElementById('start-game-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const response = await fetch("{{ path('api_poker_start') }}", {
+        method: 'POST',
+        body: formData
+    });
+    const data = await response.json();
+    document.getElementById('api-response').textContent = JSON.stringify(data, null, 2);
+});
+
+document.getElementById('player-bet-btn').addEventListener('click', async () => {
+    const amount = parseInt(document.getElementById('player-bet-amount').value);
+    if (isNaN(amount) || amount < 1) return alert('Enter a valid bet amount');
+    const response = await fetch("{{ path('api_poker_bet') }}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount })
+    });
+    const data = await response.json();
+    document.getElementById('api-response').textContent = JSON.stringify(data, null, 2);
+});
+
+document.getElementById('exchange-btn').addEventListener('click', async () => {
+    const raw = document.getElementById('exchange-indices').value;
+    const indices = raw.split(',').map(x => parseInt(x.trim())).filter(n => !isNaN(n));
+    const response = await fetch("{{ path('api_poker_exchange') }}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cards: indices })
+    });
+    const data = await response.json();
+    document.getElementById('api-response').textContent = JSON.stringify(data, null, 2);
+});
+</script>
+{% endblock %}

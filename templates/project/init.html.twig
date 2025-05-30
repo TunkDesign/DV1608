@@ -1,0 +1,45 @@
+{% extends "project/base.html.twig" %}
+
+{% block title %}Start Game{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Start a New Poker Game</h1>
+    <form id="gamestart">
+        <p>
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" name="name" placeholder="Mr Testificate" required />
+        </p>
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
+<script>
+const form = document.querySelector("#gamestart");
+const apiUrl = "{{ path('api_poker_start') }}"; // Dynamisk API-path från Symfony-routing
+
+async function sendData() {
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            body: formData,
+        });
+
+        const res = await response.json();
+
+        if (res) {
+            window.location.href = '{{ path("poker_board") }}'; // Använd även dynamisk path här
+        }
+    } catch (e) {
+        alert("Could not start the game: " + e);
+    }
+}
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    sendData();
+});
+</script>
+{% endblock %}

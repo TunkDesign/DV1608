@@ -1,0 +1,430 @@
+{% extends "project/base.html.twig" %}
+
+{% block title %}Gameboard{% endblock %}
+
+{% block body %}
+<div class="board-wrapper">
+    <section style="position: relative;">
+        <div id="overlay"></div>
+
+        <article class="gameboard" id="gameboard" style="filter: blur(2px); pointer-events: none;">
+            <div>
+                <div class="player-card" id="player-0">
+                    <h4 class="player-name">{{ poker.players[0].getName() }}</h4>
+                    <div class="card-row-hidden" id="player-0-cards">
+                        {% for card in poker.players[0].hand.cards %}
+                            <div class="card">🂠</div>
+                        {% endfor %}
+                    </div>
+                    <p class="player-bet" style="color: lightblue; margin-top: 5px;"></p>
+                    <div class="player-balance"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="player-card">
+                    <h4>Stack</h4>
+                    <div class="card-stack">
+                        <div class="pile">
+                            <span class="card">🂠</span>
+                            <span class="card">🂠</span>
+                            <span class="card">🂠</span>
+                            <span class="card">🂠</span>
+                        </div><div id="pot-display" style="text-align: center; color: white; margin-top: 10px;">
+    Total: 0 money.
+</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="player-card" id="player-1">
+                    <h4 class="player-name">{{ poker.players[1].getName() }}</h4>
+                    <div class="card-row-hidden" id="player-1-cards">
+                        {% for card in poker.players[1].hand.cards %}
+                            <div class="card">🂠</div>
+                        {% endfor %}
+                    </div>
+                    <p class="player-bet" style="color: lightblue; margin-top: 5px;"></p>
+                    <div class="player-balance"></div>
+                </div>
+            </div>
+
+            <div></div>
+
+            <div>
+                <div class="player-card" id="player-2">
+                    <h4 class="player-name">{{ poker.players[2].getName() }}</h4>
+                    <div class="card-row" id="player-2-cards">
+                        {% for card in poker.players[2].hand.cards %}
+                            <div class="card {{ card.getColor() }}">{{ card.getAsString() }}</div>
+                        {% endfor %}
+                    </div>
+                    <p class="player-bet" style="color: lightblue; margin-top: 5px;"></p>
+                    <div class="player-balance"></div>
+                    <div class="betting-ui" id="betting-ui" style="display: none;">
+                        <input type="number" id="bet-input" min="1" placeholder="Betting amount.." />
+                        <button id="bet-button">Place bet</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="exchange-ui" style="display: none; text-align: center; margin-top: 20px;">
+                <p style="color: white;">Select up to 3 cards to exchange.</p>
+                <button id="exchange-button" style="
+                    padding: 12px 24px;
+                    background-color: #ffc107;
+                    color: black;
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 16px;
+                    cursor: pointer;">Exchange cards</button>
+            </div>
+        </article>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const playerCount = 3;
+    const maxCards = 5;
+    const clientBalances = {};
+    let currentPot = 0;
+
+    const overlay = document.getElementById('overlay');
+    const gameboard = document.getElementById('gameboard');
+
+    const res = await fetch("{{ path('api_poker_state') }}");
+    const state = await res.json();
+
+    if (state.error) {
+        console.error(state.error);
+        showStartButton();
+        return;
+    }
+
+    rebuildGameboard(state);
+
+    const allReady = state.players.every(p => p.cards.length === maxCards);
+
+    if (allReady) {
+        revealGameboard();
+
+        switch (state.stage) {
+            case 'bet1': setupBetting(); break;
+            case 'exchange': enableCardExchange(); break;
+            case 'bet2': setupSecondPlayerBetting(); break;
+            case 'showdown': await showdown(); break;
+            default: await startCpuBets(); break;
+        }
+    } else {
+        showStartButton();
+    }
+
+    function showStartButton() {
+        const btn = document.createElement('button');
+        btn.id = 'start-game';
+        btn.textContent = 'Start game!';
+        Object.assign(btn.style, {
+            padding: '16px 32px', fontSize: '20px', border: 'none',
+            backgroundColor: '#008f70', color: 'white',
+            cursor: 'pointer', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        });
+        overlay.appendChild(btn);
+        btn.addEventListener('click', () => {
+            btn.remove();
+            startPolling("{{ path('api_poker_draw') }}");
+        });
+    }
+
+    function rebuildGameboard(state) {
+        state.players.forEach(player => {
+            const container = document.querySelector(`#player-${player.index}-cards`);
+            if (!container) return;
+            container.innerHTML = '';
+            player.cards.forEach(card => {
+                const el = document.createElement('div');
+                el.className = `card ${card.color}`;
+                el.textContent = card.string;
+                container.appendChild(el);
+            });
+            const balanceEl = document.querySelector(`#player-${player.index} .player-balance`);
+            balanceEl.style.textAlign = 'center';
+            if (balanceEl) balanceEl.textContent = `Balance: ${player.balance} money.`;
+            clientBalances[player.index] = player.balance;
+        });
+        updatePotDisplay(state.pot);
+    }
+
+    function updatePotDisplay(pot) {
+        currentPot = pot;
+        document.getElementById('pot-display').textContent = `Total: ${pot} money.`;
+    }
+
+    function updateBalance(index, delta) {
+        clientBalances[index] += delta;
+        const el = document.querySelector(`#player-${index} .player-balance`);
+        el.style.textAlign = 'center';
+        if (el) el.textContent = `Balance: ${clientBalances[index]} money.`;
+    }
+
+    function revealGameboard() {
+        overlay.remove();
+        gameboard.style.filter = 'none';
+        gameboard.style.pointerEvents = 'auto';
+    }
+
+    async function startCpuBets() {
+        try {
+            await new Promise(r => setTimeout(r, 600));
+            const res = await fetch("{{ path('api_poker_bet_computer') }}");
+            const data = await res.json();
+
+            data.bets.forEach(bet => {
+                const player = state.players.find(p => p.name === bet.name);
+                if (!player) return;
+                const idx = player.index;
+                const betEl = document.querySelector(`#player-${idx} .player-bet`);
+                betEl.style.textAlign = 'center';
+                if (betEl) betEl.textContent = `Bet ${bet.amount} money.`;
+                updateBalance(idx, -bet.amount);
+            });
+
+            updatePotDisplay(data.pot);
+            await new Promise(r => setTimeout(r, 500));
+            setupBetting();
+        } catch (err) {
+            console.error('Computer bet error:', err);
+        }
+    }
+
+    function setupBetting() {
+        const ui = document.getElementById('betting-ui');
+        ui.innerHTML = `<input type="number" id="bet-input" min="1" placeholder="Betting amount.." />
+                        <button id="bet-button">Bet</button>`;
+        ui.style.display = 'block';
+
+        const input = document.getElementById('bet-input');
+        const button = document.getElementById('bet-button');
+
+        button.addEventListener('click', async () => {
+            const amount = parseInt(input.value);
+            if (isNaN(amount) || amount <= 0) {
+                alert('Not a valid bet.');
+                return;
+            }
+
+            try {
+                const res = await fetch("{{ path('api_poker_bet') }}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount })
+                });
+
+                const data = await res.json();
+                ui.innerHTML = `<p style="color: lightgreen;">You bet ${amount} money.</p>`;
+                updatePotDisplay(data.pot);
+                updateBalance(2, -amount);
+            } catch (e) {
+                console.error('Could not place bet:', e);
+            } finally {
+                enableCardExchange();
+                document.querySelectorAll('.player-bet').forEach(el => el.textContent = '');
+            }
+        });
+    }
+
+    function setupSecondPlayerBetting() {
+        const ui = document.getElementById('betting-ui');
+        ui.innerHTML = `<input type="number" id="bet-input" min="1" placeholder="Betting amount" />
+                        <button id="bet-button">Bet</button>`;
+        ui.style.display = 'block';
+
+        const input = document.getElementById('bet-input');
+        const button = document.getElementById('bet-button');
+
+        button.addEventListener('click', async () => {
+            const amount = parseInt(input.value);
+            if (isNaN(amount) || amount <= 0) {
+                alert('Not a valid betting amount.');
+                return;
+            }
+
+            try {
+                const res = await fetch("{{ path('api_poker_bet') }}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount })
+                });
+
+                const data = await res.json();
+                ui.innerHTML = `<p style="color: lightgreen;">You bet ${amount} money.</p>`;
+                updatePotDisplay(data.pot);
+                updateBalance(2, -amount);
+                document.querySelectorAll('.player-bet').forEach(el => el.textContent = '');
+                await showdown();
+            } catch (e) {
+                console.error('Could not place bet:', e);
+            }
+        });
+    }
+
+    function startPolling(url) {
+        async function drawLoop() {
+            try {
+                const res = await fetch(url);
+                const { index, card } = await res.json();
+
+                const container = document.querySelector(`#player-${index}-cards`);
+                if (!container) return;
+
+                const el = document.createElement('div');
+                el.className = `card ${card?.color || ''}`;
+                el.textContent = card?.string || '🂠';
+                container.appendChild(el);
+            } catch (err) {
+                console.error('Error polling cards:', err);
+            } finally {
+                const allFull = Array.from({ length: playerCount }).every((_, i) => {
+                    const container = document.querySelector(`#player-${i}-cards`);
+                    return container && container.children.length === maxCards;
+                });
+
+                if (allFull) {
+                    revealGameboard();
+                    await new Promise(r => setTimeout(r, 800));
+                    await startCpuBets();
+                } else {
+                    await new Promise(r => setTimeout(r, 300));
+                    drawLoop();
+                }
+            }
+        }
+
+        revealGameboard();
+        drawLoop();
+    }
+
+    function enableCardExchange() {
+        const cards = document.querySelectorAll('#player-2-cards .card');
+        const exchangeUi = document.getElementById('exchange-ui');
+        const exchangeBtn = document.getElementById('exchange-button');
+        const selected = new Set();
+
+        exchangeUi.style.display = 'block';
+
+        cards.forEach((card, i) => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                if (selected.has(i)) {
+                    selected.delete(i);
+                    card.classList.remove('selected');
+                } else if (selected.size < 3) {
+                    selected.add(i);
+                    card.classList.add('selected');
+                }
+            });
+        });
+
+        exchangeBtn.addEventListener('click', async () => {
+            exchangeUi.style.display = 'none';
+
+            const res = await fetch("{{ path('api_poker_exchange') }}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cards: Array.from(selected) })
+            });
+
+            const { cards: newCards } = await res.json();
+
+            const hand = document.querySelector('#player-2-cards');
+            hand.innerHTML = '';
+            newCards.forEach(c => {
+                const el = document.createElement('div');
+                el.className = `card ${c.color}`;
+                el.textContent = c.string;
+                hand.appendChild(el);
+            });
+
+            await startSecondBetting();
+        });
+    }
+    
+    async function startSecondBetting() {
+        try {
+            const res = await fetch("{{ path('api_poker_bet_computer') }}");
+            const data = await res.json();
+
+            data.bets.forEach(bet => {
+                const player = state.players.find(p => p.name === bet.name);
+                if (!player) return;
+
+                const index = player.index;
+                const betEl = document.querySelector(`#player-${index} .player-bet`);
+                betEl.style.textAlign = 'center';
+                if (betEl) {
+                    betEl.textContent = `Bet ${bet.amount} money.`;
+                }
+
+                updateBalance(index, -bet.amount);
+            });
+
+            updatePotDisplay(data.pot);
+            setupSecondPlayerBetting();
+        } catch (e) {
+            console.error('Second betting error:', e);
+        }
+    }
+
+    async function showdown() {
+        const res = await fetch("{{ path('api_poker_showdown') }}");
+        const { players } = await res.json();
+
+        players.forEach(({ index, cards, hand }) => {
+            const container = document.querySelector(`#player-${index} .card-row, #player-${index} .card-row-hidden`);
+            if (!container) return;
+
+            container.classList.remove('card-row-hidden');
+            container.classList.add('card-row');
+            container.innerHTML = '';
+
+            cards.forEach(card => {
+                const el = document.createElement('div');
+                el.className = `card ${card.color || ''}`.trim();
+                el.textContent = card.string;
+                container.appendChild(el);
+            });
+
+            const nameEl = document.querySelector(`#player-${index} .player-name`);
+            if (nameEl && !nameEl.textContent.includes('(')) {
+                nameEl.textContent += ` (${hand})`;
+            }
+        });
+
+        const winnerRes = await fetch("{{ path('api_poker_winner') }}");
+        const { winner } = await winnerRes.json();
+        const winnerPlayer = state.players.find(p => p.name === winner.name);
+
+        if (winnerPlayer) {
+            updateBalance(winnerPlayer.index, currentPot);
+            const div = document.querySelector(`#player-${winnerPlayer.index}`);
+            if (div) {
+                div.classList.add('winner-player-card');
+                const nameEl = div.querySelector('.player-name');
+                if (nameEl && !nameEl.textContent.includes('👑')) {
+                    const crown = document.createElement('span');
+                    crown.className = 'winner-crown-absolute';
+                    crown.textContent = '👑';
+                    nameEl.prepend(crown);
+                }
+            }
+        }
+
+        updatePotDisplay(0);
+        document.querySelectorAll('.player-bet').forEach(el => el.textContent = '');
+    }
+});
+</script>
+
+
+{% endblock %}

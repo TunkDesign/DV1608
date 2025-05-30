@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="sv">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome{% endblock %} | Poker</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('poker') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('poker') }}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <div class="container">
+                    <a href="{{ path('poker_start') }}" class="logo">Poker</a>
+                    <ul class="nav-links">
+                        <li><a href="{{ path('poker_start') }}" class="{% if 'poker_start' in app.request.attributes.get('_route') %}active{% endif %}">Home</a></li>
+                        <li><a href="{{ path('poker_board') }}" class="{% if 'poker_board' in app.request.attributes.get('_route') %}active{% endif %}">Gameboard</a></li>
+                        <li><a href="{{ path('poker_api') }}" class="{% if 'poker_api' in app.request.attributes.get('_route') %}active{% endif %}">API</a></li>
+                        <li><a href="{{ path('poker_about') }}" class="{% if 'poker_about' in app.request.attributes.get('_route') %}active{% endif %}">About</a></li>
+                        <li><a href="{{ path('poker_reset') }}" class="{% if 'poker_reset' in app.request.attributes.get('_route') %}active{% endif %}">Reset</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>
