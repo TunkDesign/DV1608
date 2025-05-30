@@ -10,6 +10,11 @@ class Hand
     private array $cards = [];
 
     /**
+     * @var HandEvaluator
+     */
+    private string $hand;
+
+    /**
      * Add a card to the hand.
      *
      * @param CardGraphic $card
@@ -17,6 +22,19 @@ class Hand
     public function addCard(CardGraphic $card): void
     {
         $this->cards[] = $card;
+    }
+
+    /**
+     * Replace a card in the hand with a new card.
+     * If the card to replace is not found, it will be added instead.
+     * 
+     * @param CardGraphic $card
+     */
+    public function replaceCard(int $index, CardGraphic $newCard): void
+    {
+        if (isset($this->cards[$index])) {
+            $this->cards[$index] = $newCard;
+        }
     }
 
     /**
