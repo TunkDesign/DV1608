@@ -114,4 +114,11 @@ class DeckTest extends TestCase
 
         $this->assertNull($deck->draw());
     }
+
+    public function testJsonSerialize(): void
+    {
+        $deck = new Deck();
+
+        $this->assertIsArray($deck->jsonSerialize());
+    }
 }

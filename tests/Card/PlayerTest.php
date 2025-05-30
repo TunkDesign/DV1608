@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use App\Card\Player;
 use App\Card\CardGraphic;
 use App\Card\Hand;
+use App\Card\Poker;
 
 /**
  * Test cases for class Player.
@@ -70,5 +71,59 @@ class PlayerTest extends TestCase
 
         $player->setInactive();
         $this->assertFalse($player->isActive());
+    }
+
+    public function testGetPlayHand(): void
+    {
+        $game = new Poker();
+
+        $game->addPlayer(new Player('Ewa'));
+
+        $playerEwa = $game->getPlayers()[0];
+        
+        $playerEwa->addCard(new CardGraphic('2'));
+        $playerEwa->addCard(new CardGraphic('2'));
+        $playerEwa->addCard(new CardGraphic('4'));
+        $playerEwa->addCard(new CardGraphic('4'));
+        $playerEwa->addCard(new CardGraphic('4'));
+
+        $this->assertEquals($playerEwa->getPlayHand(), 'Full House');
+    }
+
+    public function testGetBalance(): void
+    {
+        $game = new Poker();
+
+        $game->addPlayer(new Player('Ewa'));
+        
+        $this->assertEquals(100, $game->getPlayer()->getBalance());
+    }
+
+    public function testBetting(): void
+    {
+        $game = new Poker();
+
+        $game->addPlayer(new Player('Ewa'));
+
+        try {
+            $game->getPlayer()->bet(200);
+        } catch (\Throwable $th) {
+            $this->assertStringContainsString('Player does not have enough money.', $th);
+        }
+
+        $game->getPlayer()->bet(10);
+        
+        $this->assertEquals(90, $game->getPlayer()->getBalance());
+    }
+
+    public function testResetBet(): void
+    {
+        $game = new Poker();
+
+        $game->addPlayer(new Player('Ewa'));
+        $game->getPlayer()->resetBet();
+
+        $this->assertEquals(0, $game->getPlayer()->getBet());
+        
     }
 }

@@ -12,6 +12,57 @@ use App\Card\CardGraphic;
  */
 class TwentyOneTest extends TestCase
 {
+
+    public function testLastPlayerEndsGame(): void
+    {
+        $game = new TwentyOne();
+        $player1 = new Player("Ewa");
+        $player2 = new Player("Karl");
+
+        $game->addPlayer($player1);
+        $game->addPlayer($player2);
+
+        $player1->fold();
+
+        $game->nextPlayer();
+
+        $this->assertTrue($game->hasEnded());
+    }
+
+    public function testPlayerDrawCardUntilFolded(): void 
+    {
+        $game = new TwentyOne();
+        $player1 = new Player("Ewa");
+        $player2 = new Player("Karl");
+        $player3 = new Player("Julia");
+
+        $game->addPlayer($player1);
+        $game->addPlayer($player2);
+        $game->addPlayer($player3);
+
+        $oldPlayer = $game->getPlayer();
+
+        while (!$player1->hasFolded()) {
+            $game->draw($player1);
+        }
+
+        while (!$player3->hasFolded()) {
+            $game->draw($player3);
+        }
+
+        $newPlayer = $game->getPlayer();
+
+        $this->assertTrue($player1->hasFolded());
+        $this->assertNotSame($oldPlayer, $newPlayer);
+        $this->assertTrue($game->hasEnded());
+    }
+
+    public function testGetDeck(): void
+    {
+        $game = new TwentyOne();
+        $this->assertIsNotArray($game->getDeck());
+    }
+
     public function testAddAndGetPlayers(): void
     {
         $game = new TwentyOne();
