@@ -43,6 +43,16 @@ class Player
     private bool $active = false;
 
     /**
+     * @var int Current player balance.
+     */
+    private int $balance = 100;
+
+    /**
+     * @var int Current player bet.
+     */
+    private int $currentBet = 0;
+
+    /**
      * Creates a new player with a given name.
      *
      * @param string $name The name of the player.
@@ -172,5 +182,66 @@ class Player
         return $this->active;
     }
 
+    /**
+     * Get the player balance.
+     * 
+     * @return int
+     */
+    public function getBalance(): int
+    {
+        return $this->balance;
+    }
+
+    /**
+     * Set the player balance.
+     * 
+     * @param int $money
+     */
+    public function addBalance($money): void
+    {
+        $this->balance += $money;
+    }
+
+    /**
+     * Get the current bet amount.
+     * 
+     * @return int
+     */
+    public function getBet(): int
+    {
+        return $this->currentBet;
+    }
+
+    /**
+     * Place a bet for the player.
+     *
+     * @param int $amount The amount to bet.
+     * @throws \Exception If the player does not have enough money.
+     */
+    public function bet(int $amount): void
+    {
+        if ($amount > $this->balance) {
+            throw new \Exception("Player does not have enough money.");
+        }
+
+        $this->balance -= $amount;
+        $this->currentBet = $amount;
+    }
+
+    /**
+     * Reset the player's bet to zero.
+     */
+    public function resetBet(): void
+    {
+        $this->currentBet = 0;
+    }
+
+    /**
+     * Make a move in the game.
+     * This method should be overridden by subclasses to implement specific player behavior.
+     *
+     * @param Poker $game The poker game instance.
+     * @param Player $player The player making the move.
+     */
     public function makeMove(Poker $game, Player $player): void {}
 }
