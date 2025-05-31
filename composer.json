@@ -91,7 +91,7 @@
         "csfix:dry": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src --dry-run -v",
         "sniffer:src": "tools/php_codesniffer/vendor/bin/phpcs src",
         "phpmd": "tools/phpmd/vendor/bin/phpmd . text tools/phpmd/phpmd.xml || true",
-        "phpstan": "tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.neon || true",
+        "phpstan": "tools/phpstan/vendor/bin/phpstan analyse --memory-limit 248M -c tools/phpstan/phpstan.neon || true",
         "lint": [
             "@csfix",
             "@phpmd",
