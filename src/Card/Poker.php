@@ -33,7 +33,7 @@ class Poker
 
     /**
      * Add a new player.
-     * 
+     *
      * @param Player $player
      */
     public function addPlayer(Player $player): void
@@ -43,7 +43,7 @@ class Poker
 
     /**
      * Get all players.
-     * 
+     *
      * @return Player[]
      */
     public function getPlayers(): array
@@ -53,7 +53,7 @@ class Poker
 
     /**
      * Get the current active player.
-     * 
+     *
      * @return Player
      */
     public function getPlayer(): Player
@@ -63,7 +63,7 @@ class Poker
 
     /**
      * Get the index of the current active player.
-     * 
+     *
      * @return int
      */
     public function getPlayerIndex(): int
@@ -78,7 +78,7 @@ class Poker
 
     /**
      * Draw a card for a player.
-     * 
+     *
      * @param Player $player
      * @return CardGraphic|false
      */
@@ -138,7 +138,7 @@ class Poker
 
     /**
      * Evaluate a player's hand and return the rank.
-     * 
+     *
      * @param Player $player
      * @return string
      */
@@ -235,13 +235,13 @@ class Poker
         $bets = [];
         foreach ($this->players as $player) {
             if ($player instanceof MonkeyPlayer) {
-                
+
                 $amount = 10;
                 $this->placeBet($player, $amount);
                 $bets[] = ['name' => $player->getName(), 'amount' => $amount];
             }
             if ($player instanceof ComputerPlayer) {
-                
+
                 $hand = $player->getHand()->getCards();
                 $valueCounts = [];
                 foreach ($hand as $index => $card) {

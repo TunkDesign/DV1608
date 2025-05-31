@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Card\Rule;
 
 use App\Card\Hand;

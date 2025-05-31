@@ -27,7 +27,7 @@ class Hand
     /**
      * Replace a card in the hand with a new card.
      * If the card to replace is not found, it will be added instead.
-     * 
+     *
      * @param CardGraphic $card
      */
     public function replaceCard(int $index, CardGraphic $newCard): void

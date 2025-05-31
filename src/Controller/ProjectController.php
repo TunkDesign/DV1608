@@ -20,13 +20,13 @@ final class ProjectController extends AbstractController
     {
         return $this->render('project/start.html.twig');
     }
-    
+
     #[Route('/proj/api', name: 'poker_api')]
     public function api(): Response
     {
         return $this->render('project/api.html.twig');
     }
-    
+
     #[Route('/proj/about', name: 'poker_about')]
     public function about(): Response
     {

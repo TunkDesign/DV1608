@@ -184,7 +184,7 @@ class Player
 
     /**
      * Get the player balance.
-     * 
+     *
      * @return int
      */
     public function getBalance(): int
@@ -194,7 +194,7 @@ class Player
 
     /**
      * Set the player balance.
-     * 
+     *
      * @param int $money
      */
     public function addBalance($money): void
@@ -204,7 +204,7 @@ class Player
 
     /**
      * Get the current bet amount.
-     * 
+     *
      * @return int
      */
     public function getBet(): int
@@ -243,5 +243,7 @@ class Player
      * @param Poker $game The poker game instance.
      * @param Player $player The player making the move.
      */
-    public function makeMove(Poker $game, Player $player): void {}
+    public function makeMove(Poker $game, Player $player): void
+    {
+    }
 }
