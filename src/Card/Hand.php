@@ -10,11 +10,6 @@ class Hand
     private array $cards = [];
 
     /**
-     * @var HandEvaluator
-     */
-    private string $hand;
-
-    /**
      * Add a card to the hand.
      *
      * @param CardGraphic $card
@@ -28,7 +23,8 @@ class Hand
      * Replace a card in the hand with a new card.
      * If the card to replace is not found, it will be added instead.
      *
-     * @param CardGraphic $card
+     * @param int $index Index of the card to replace.
+     * @param CardGraphic $newCard The new card to place in the hand.
      */
     public function replaceCard(int $index, CardGraphic $newCard): void
     {

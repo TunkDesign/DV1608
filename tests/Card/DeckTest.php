@@ -118,7 +118,8 @@ class DeckTest extends TestCase
     public function testJsonSerialize(): void
     {
         $deck = new Deck();
-
+        
+        /** @phpstan-ignore-next-line */
         $this->assertIsArray($deck->jsonSerialize());
     }
 }

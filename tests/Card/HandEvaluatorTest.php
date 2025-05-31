@@ -47,21 +47,21 @@ class HandEvaluatorTest extends TestCase
         $playerEwa = $game->getPlayers()[0];
         $playerKarl = $game->getPlayers()[1];
         
-        $playerEwa->addCard(new CardGraphic('2'));
-        $playerEwa->addCard(new CardGraphic('2'));
-        $playerEwa->addCard(new CardGraphic('4'));
-        $playerEwa->addCard(new CardGraphic('4'));
-        $playerEwa->addCard(new CardGraphic('4'));
+        $playerEwa->addCard(new CardGraphic(2));
+        $playerEwa->addCard(new CardGraphic(2));
+        $playerEwa->addCard(new CardGraphic(4));
+        $playerEwa->addCard(new CardGraphic(4));
+        $playerEwa->addCard(new CardGraphic(4));
 
         $cardHandEwa = $evaluator->evaluate($playerEwa->getHand());
 
         $this->assertEquals($cardHandEwa, 'Full House');
         
-        $playerKarl->addCard(new CardGraphic('10', 'spades'));
-        $playerKarl->addCard(new CardGraphic('8', 'diamonds'));
-        $playerKarl->addCard(new CardGraphic('5', 'hearts'));
-        $playerKarl->addCard(new CardGraphic('13', 'clubs'));
-        $playerKarl->addCard(new CardGraphic('2', 'diamonds'));
+        $playerKarl->addCard(new CardGraphic(10, 'spades'));
+        $playerKarl->addCard(new CardGraphic(8, 'diamonds'));
+        $playerKarl->addCard(new CardGraphic(5, 'hearts'));
+        $playerKarl->addCard(new CardGraphic(13, 'clubs'));
+        $playerKarl->addCard(new CardGraphic(2, 'diamonds'));
 
         $cardHandKarl = $evaluator->evaluate($playerKarl->getHand());
 

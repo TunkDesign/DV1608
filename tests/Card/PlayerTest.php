@@ -80,12 +80,12 @@ class PlayerTest extends TestCase
         $game->addPlayer(new Player('Ewa'));
 
         $playerEwa = $game->getPlayers()[0];
-        
-        $playerEwa->addCard(new CardGraphic('2'));
-        $playerEwa->addCard(new CardGraphic('2'));
-        $playerEwa->addCard(new CardGraphic('4'));
-        $playerEwa->addCard(new CardGraphic('4'));
-        $playerEwa->addCard(new CardGraphic('4'));
+
+        $playerEwa->addCard(new CardGraphic(2));
+        $playerEwa->addCard(new CardGraphic(2));
+        $playerEwa->addCard(new CardGraphic(4));
+        $playerEwa->addCard(new CardGraphic(4));
+        $playerEwa->addCard(new CardGraphic(4));
 
         $this->assertEquals($playerEwa->getPlayHand(), 'Full House');
     }
@@ -95,7 +95,7 @@ class PlayerTest extends TestCase
         $game = new Poker();
 
         $game->addPlayer(new Player('Ewa'));
-        
+
         $this->assertEquals(100, $game->getPlayer()->getBalance());
     }
 
@@ -112,7 +112,7 @@ class PlayerTest extends TestCase
         }
 
         $game->getPlayer()->bet(10);
-        
+
         $this->assertEquals(90, $game->getPlayer()->getBalance());
     }
 
@@ -124,6 +124,15 @@ class PlayerTest extends TestCase
         $game->getPlayer()->resetBet();
 
         $this->assertEquals(0, $game->getPlayer()->getBet());
-        
+    }
+
+    public function testMakeMoveDoesNothingByDefault(): void
+    {
+        $game = new Poker();
+        $player = new Player('Test');
+
+        $this->expectNotToPerformAssertions();
+
+        $player->makeMove($game, $player);
     }
 }

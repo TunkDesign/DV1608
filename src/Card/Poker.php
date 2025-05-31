@@ -19,7 +19,10 @@ use App\Card\Rule\{
 class Poker
 {
     private Deck $deck;
+
+    /** @var Player[] */
     private array $players = [];
+
     private int $currentIndex = 0;
     private bool $endGame = false;
     private int $pot = 0;
@@ -118,23 +121,26 @@ class Poker
      * @param array<int, CardGraphic> $cards Cards to redraw.
      * @return array<int, CardGraphic> Returns the drawn cards.
      */
-    public function redraw(Player $player, $cards): array
+    public function redraw(Player $player, array $cards): array
     {
-        //$playercards = $player->getHand()->getCards();
         $drawnCards = [];
+        $hand = $player->getHand()->getCards();
 
         foreach ($cards as $card) {
-            $drawn = $this->deck->draw();
+            $index = array_search($card, $hand, true);
 
-            if ($drawn instanceof CardGraphic) {
-                $player->getHand()->replaceCard($card, $drawn);
-                $drawnCards[] = $drawn;
+            if ($index !== false) {
+                $drawn = $this->deck->draw();
+
+                if ($drawn instanceof CardGraphic) {
+                    $player->getHand()->replaceCard($index, $drawn);
+                    $drawnCards[] = $drawn;
+                }
             }
         }
 
         return $drawnCards;
     }
-
 
     /**
      * Evaluate a player's hand and return the rank.
@@ -230,20 +236,25 @@ class Poker
         $this->addToPot($amount);
     }
 
+    /**
+     * Let all computer players place their bets.
+     *
+     * @return array<int, array{name: string, amount: int}>
+     */
     public function runComputerBets(): array
     {
         $bets = [];
         foreach ($this->players as $player) {
             if ($player instanceof MonkeyPlayer) {
-
                 $amount = 10;
                 $this->placeBet($player, $amount);
                 $bets[] = ['name' => $player->getName(), 'amount' => $amount];
             }
-            if ($player instanceof ComputerPlayer) {
 
+            if ($player instanceof ComputerPlayer) {
                 $hand = $player->getHand()->getCards();
                 $valueCounts = [];
+
                 foreach ($hand as $index => $card) {
                     $value = $card->getValue();
                     if (!isset($valueCounts[$value])) {
@@ -251,12 +262,14 @@ class Poker
                     }
                     $valueCounts[$value][] = $index;
                 }
+
                 $maxCount = 1;
                 foreach ($valueCounts as $indexes) {
                     if (count($indexes) > $maxCount) {
                         $maxCount = count($indexes);
                     }
                 }
+
                 $amount = 10;
                 if ($maxCount == 2) {
                     $amount = 30;
@@ -265,6 +278,7 @@ class Poker
                 } elseif ($maxCount >= 4) {
                     $amount = 100;
                 }
+
                 $this->placeBet($player, $amount);
                 $bets[] = ['name' => $player->getName(), 'amount' => $amount];
             }

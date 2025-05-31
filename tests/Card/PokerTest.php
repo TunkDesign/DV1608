@@ -62,6 +62,7 @@ class PokerTest extends TestCase
 
         $player = $game->getPlayer();
         $drawnCard = $game->draw($player);
+        /** @phpstan-ignore-next-line */
         $this->assertNotNull($drawnCard);
         $this->assertCount(1, $player->getHand()->getCards());
     }
@@ -96,6 +97,7 @@ class PokerTest extends TestCase
         $game->addPlayer(new Player('Ewa'));
 
         $player = $game->getPlayer();
+
         $game->draw($player);
         $game->draw($player);
         $game->draw($player);
@@ -107,13 +109,20 @@ class PokerTest extends TestCase
 
         $cardIndexesToRedraw = [0, 2, 4];
 
-        $game->redraw($player, $cardIndexesToRedraw);
+        $cardsToRedraw = [];
+        foreach ($cardIndexesToRedraw as $index) {
+            $cardsToRedraw[] = $playerCards[$index];
+        }
+
+        $game->redraw($player, $cardsToRedraw);
 
         $newPlayerCards = $player->getHand()->getCards();
 
         $this->assertCount(5, $newPlayerCards);
+
         $this->assertNotSame($playerCards, $newPlayerCards);
     }
+
 
     public function testEvaluateHand(): void
     {
@@ -125,21 +134,21 @@ class PokerTest extends TestCase
         $playerEwa = $game->getPlayers()[0];
         $playerKarl = $game->getPlayers()[1];
 
-        $playerEwa->addCard(new CardGraphic('2'));
-        $playerEwa->addCard(new CardGraphic('2'));
-        $playerEwa->addCard(new CardGraphic('4'));
-        $playerEwa->addCard(new CardGraphic('4'));
-        $playerEwa->addCard(new CardGraphic('4'));
+        $playerEwa->addCard(new CardGraphic(2));
+        $playerEwa->addCard(new CardGraphic(2));
+        $playerEwa->addCard(new CardGraphic(4));
+        $playerEwa->addCard(new CardGraphic(4));
+        $playerEwa->addCard(new CardGraphic(4));
 
         $cardHandEwa = $game->evaluateHand($playerEwa);
 
         $this->assertEquals($cardHandEwa, 'Full House');
 
-        $playerKarl->addCard(new CardGraphic('10', 'spades'));
-        $playerKarl->addCard(new CardGraphic('8', 'diamonds'));
-        $playerKarl->addCard(new CardGraphic('5', 'hearts'));
-        $playerKarl->addCard(new CardGraphic('13', 'clubs'));
-        $playerKarl->addCard(new CardGraphic('2', 'diamonds'));
+        $playerKarl->addCard(new CardGraphic(10, 'spades'));
+        $playerKarl->addCard(new CardGraphic(8, 'diamonds'));
+        $playerKarl->addCard(new CardGraphic(5, 'hearts'));
+        $playerKarl->addCard(new CardGraphic(13, 'clubs'));
+        $playerKarl->addCard(new CardGraphic(2, 'diamonds'));
 
         $cardHandKarl = $game->evaluateHand($playerKarl);
 
@@ -156,17 +165,17 @@ class PokerTest extends TestCase
         $game->addPlayer($player1);
         $game->addPlayer($player2);
 
-        $player1->addCard(new CardGraphic('2'));
-        $player1->addCard(new CardGraphic('2'));
-        $player1->addCard(new CardGraphic('4'));
-        $player1->addCard(new CardGraphic('4'));
-        $player1->addCard(new CardGraphic('4'));
+        $player1->addCard(new CardGraphic(2));
+        $player1->addCard(new CardGraphic(2));
+        $player1->addCard(new CardGraphic(4));
+        $player1->addCard(new CardGraphic(4));
+        $player1->addCard(new CardGraphic(4));
 
-        $player2->addCard(new CardGraphic('10'));
-        $player2->addCard(new CardGraphic('10'));
-        $player2->addCard(new CardGraphic('5'));
-        $player2->addCard(new CardGraphic('5'));
-        $player2->addCard(new CardGraphic('8'));
+        $player2->addCard(new CardGraphic(10));
+        $player2->addCard(new CardGraphic(10));
+        $player2->addCard(new CardGraphic(5));
+        $player2->addCard(new CardGraphic(5));
+        $player2->addCard(new CardGraphic(8));
 
         $winner = $game->getWinner();
         $this->assertInstanceOf(Player::class, $winner);
@@ -183,17 +192,17 @@ class PokerTest extends TestCase
         $game->addPlayer($player1);
         $game->addPlayer($player2);
 
-        $player1->addCard(new CardGraphic('10'));
-        $player1->addCard(new CardGraphic('10'));
-        $player1->addCard(new CardGraphic('9'));
-        $player1->addCard(new CardGraphic('5'));
-        $player1->addCard(new CardGraphic('2'));
+        $player1->addCard(new CardGraphic(10));
+        $player1->addCard(new CardGraphic(10));
+        $player1->addCard(new CardGraphic(9));
+        $player1->addCard(new CardGraphic(5));
+        $player1->addCard(new CardGraphic(2));
 
-        $player2->addCard(new CardGraphic('10'));
-        $player2->addCard(new CardGraphic('10'));
-        $player2->addCard(new CardGraphic('13'));
-        $player2->addCard(new CardGraphic('7'));
-        $player2->addCard(new CardGraphic('3'));
+        $player2->addCard(new CardGraphic(10));
+        $player2->addCard(new CardGraphic(10));
+        $player2->addCard(new CardGraphic(13));
+        $player2->addCard(new CardGraphic(7));
+        $player2->addCard(new CardGraphic(3));
 
         $winner = $game->getWinner();
 
@@ -220,27 +229,27 @@ class PokerTest extends TestCase
         $game->addPlayer($monkey);
 
         $cpuPair = new ComputerPlayer('PairBot');
-        $cpuPair->addCard(new CardGraphic('4'));
-        $cpuPair->addCard(new CardGraphic('4'));
-        $cpuPair->addCard(new CardGraphic('7'));
-        $cpuPair->addCard(new CardGraphic('9'));
-        $cpuPair->addCard(new CardGraphic('12'));
+        $cpuPair->addCard(new CardGraphic(4));
+        $cpuPair->addCard(new CardGraphic(4));
+        $cpuPair->addCard(new CardGraphic(7));
+        $cpuPair->addCard(new CardGraphic(9));
+        $cpuPair->addCard(new CardGraphic(12));
         $game->addPlayer($cpuPair);
 
         $cpuThree = new ComputerPlayer('ThreeBot');
-        $cpuThree->addCard(new CardGraphic('5'));
-        $cpuThree->addCard(new CardGraphic('5'));
-        $cpuThree->addCard(new CardGraphic('5'));
-        $cpuThree->addCard(new CardGraphic('8'));
-        $cpuThree->addCard(new CardGraphic('11'));
+        $cpuThree->addCard(new CardGraphic(5));
+        $cpuThree->addCard(new CardGraphic(5));
+        $cpuThree->addCard(new CardGraphic(5));
+        $cpuThree->addCard(new CardGraphic(8));
+        $cpuThree->addCard(new CardGraphic(11));
         $game->addPlayer($cpuThree);
 
         $cpuFour = new ComputerPlayer('FourBot');
-        $cpuFour->addCard(new CardGraphic('9'));
-        $cpuFour->addCard(new CardGraphic('9'));
-        $cpuFour->addCard(new CardGraphic('9'));
-        $cpuFour->addCard(new CardGraphic('9'));
-        $cpuFour->addCard(new CardGraphic('2'));
+        $cpuFour->addCard(new CardGraphic(9));
+        $cpuFour->addCard(new CardGraphic(9));
+        $cpuFour->addCard(new CardGraphic(9));
+        $cpuFour->addCard(new CardGraphic(9));
+        $cpuFour->addCard(new CardGraphic(2));
         $game->addPlayer($cpuFour);
 
         $bets = $game->runComputerBets();
@@ -276,11 +285,11 @@ class PokerTest extends TestCase
 
         $this->assertFalse($game->fullHands());
 
-        $game->getPlayer()->addCard(new CardGraphic('10'));
-        $game->getPlayer()->addCard(new CardGraphic('10'));
-        $game->getPlayer()->addCard(new CardGraphic('9'));
-        $game->getPlayer()->addCard(new CardGraphic('5'));
-        $game->getPlayer()->addCard(new CardGraphic('2'));
+        $game->getPlayer()->addCard(new CardGraphic(10));
+        $game->getPlayer()->addCard(new CardGraphic(10));
+        $game->getPlayer()->addCard(new CardGraphic(9));
+        $game->getPlayer()->addCard(new CardGraphic(5));
+        $game->getPlayer()->addCard(new CardGraphic(2));
 
         $this->assertTrue($game->fullHands());
     }

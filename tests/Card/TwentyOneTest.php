@@ -60,6 +60,7 @@ class TwentyOneTest extends TestCase
     public function testGetDeck(): void
     {
         $game = new TwentyOne();
+        /** @phpstan-ignore-next-line */
         $this->assertIsNotArray($game->getDeck());
     }
 
