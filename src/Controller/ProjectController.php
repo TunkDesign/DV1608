@@ -163,7 +163,17 @@ final class ProjectController extends AbstractController
             $players = $game->getPlayers();
 
             $player = $players[2];
-            $game->redraw($player, $cardIndex['cards']);
+            $indexes = $cardIndex['cards'];
+            $hand = $player->getHand()->getCards();
+            $cardsToRedraw = [];
+
+            foreach ($indexes as $index) {
+                if (isset($hand[$index])) {
+                    $cardsToRedraw[] = $hand[$index];
+                }
+            }
+
+            $game->redraw($player, $cardsToRedraw);
 
             $players[0]->makeMove($game, $players[0]);
 
