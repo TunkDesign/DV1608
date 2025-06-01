@@ -15,6 +15,7 @@
       <a href="#kmom04">Kmom04</a>
       <a href="#kmom05">Kmom05</a>
       <a href="#kmom06">Kmom06</a>
+      <a href="#kmom10">Kmom10</a>
     </nav>
 
     <article id="kmom01" class="report-section">
@@ -145,6 +146,33 @@
 
       <h3>Today I Learned</h3>
       <p>Det jag verkligen tar med mig från detta moment är hur mycket värdefull information man kan få ut från verktyg som PHPMetrics och Scrutinizer. Det är inte bara siffror utan det är konkret hjälp för att förbättra koden. Och att Scrutinizer automatiskt analyserar koden vid varje push är guld värt. Jag kommer definitivt att använda detta i mina egna projekt framöver.</p>
+    </article>
+
+    <article id="kmom10" class="report-section">
+      <h2>Kmom10</h2>
+      <h3>Krav 1-3: Webbplatsen</h3>
+      <p>Jag valde att bygga ett Femkortspoker-spel där man spelar mot två datorstyrda motståndare: Monkey och Computer. Hela projektet har fått en egen stil där jag försökte få det att kännas som ett riktigt pokerbord, med tydliga visuella kort, pott och saldon. Jag ville skapa känslan av att man faktiskt sitter i ett kasino.</p>
+      <p>För att särskilja det visuellt från reportsidan har jag byggt upp en helt egen layout med ny navbar, ny färgpalett och anpassad CSS. Alla vyer för projektet ligger under /proj, med en landningssida, en sida för att starta spelet, en about-sida och en API-sida.</p>
+      <p>Jag har också uppdaterat README.md med klickbara badges för Scrutinizer (build, coverage och quality). Kodtäckningen ligger på 100%, men mitt Scrutinizer poäng gick tyvärr ner lite, från 9.96 till 9.82, förmodligen på grund av några kompromisser i strukturen för att få spelet att fungera logiskt.</p>
+
+      <h3>Krav 4: JSON API</h3>
+      <p>Jag valde att inte bara skapa några enstaka controller routes, utan hela spelet är byggt kring ett JSON API. Frontend kommunikationen sker helt via JavaScript och polling där allt från att dra kort, satsa, byta kort till att visa vinnaren styrs av API:et. Detta ger en helt sömlös upplevelse utan sidladdningar.</p>
+      <p>Jag har lagt till 10 endpoints, varav 3 använder POST, och alla går att testa direkt via sidan /proj/api. Istället för att bara lista länkar valde jag att göra sidan mer interaktiv. När man klickar på en knapp görs ett riktigt anrop, och svaret visas direkt i en "konsol"-ruta. Det gör testningen både tydligare och roligare.</p>
+
+      <h3>Krav 6: Avancerade features</h3>
+      <p>Jag vet att jag inte har gjort ORM-delen, men jag vill ändå lyfta fram några saker som jag tycker hör hemma här.</p>
+      <p>Jag hade kunnat göra spelet med olika routes för varje steg, men istället valde jag att gräva ner mig i JavaScript och bygga hela flödet dynamiskt. Spelet går från att dela ut kort, till betting, till spelarens val och sedan vidare, där allt styrs med polling och stegvis logik utan omladdningar. Det var både klurigt och tidskrävande att få till det så att alla delar synkar rätt.</p>
+      <p>Att bygga två olika datorstyrda spelare var också en utmaning. Monkey, som är helt dum, satsar alltid 10 och byter tre slumpmässiga kort. Men Computer analyserar sin hand och försöker förbättra den, och satsar därefter. Det blev lite extra logik i koden för att få honom att kännas mer "mänsklig".</p>
+      <p>Slutligen byggde jag min API-sida så man testar alla endpoints, inte bara via länkar, utan med interaktiva knappar som visar svaren direkt. Det var ett kul sätt att kombinera frontend och backend på.</p>
+
+
+      <h3>Projektupplevelse</h3>
+      <p>Det här projektet var både kul och frustrerande, fast på det bra sättet. Jag gillar att vi fick frihet att göra något eget, utan några egentligen fasta krav. För min del blev det ett spel jag själv alrdig har testat. Samtidigt tog det mer tid än jag trodde, särskilt att få frontend och backend att gå hand i hand.</p>
+      <p>Att hålla koll på spelets alla faser och att kombinera polling, API, visuell uppdatering och logik var en rejäl hjärngympa. Jag valde att inte ta genvägar, även om det ibland blev lite stökigt i koden, så var det ändå värt det. Jag fick chansen att använda mycket av det jag lärt mig i de andra kurserna och använde flera delar från tidigare kursmoment också. Att vi redan hade basen från tidigare kursmoment gjorde det hela lite lättare.</p>
+      
+      <h3>Tankar om kursen</h3>
+      <p>Jag tycker kursen varit riktigt bra. Tydliga krav, mycket frihet och en bra balans mellan teori och praktik. Discord har fungerat jättebra när man kört fast, då man oftast inte är själv i det. Det enda jag tänker på är att Symfony känns lite tungt för så här små projekt, då det laddar om ganska långsamt efter varje lite ändring, vilket bromsade upp utvecklingen lite. Men annars har det varit super.</p>
+      <p>Jag skulle absolut rekommendera kursen till andra. Den ger en bra grund i MVC och visar hur man kan bygga en fungerande webbapp från grunden. Betyg? En stark 9 av 10.</p>
     </article>
   </div>
 </section>
