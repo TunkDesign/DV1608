@@ -69,10 +69,6 @@
                 
             </li>
                     <li>
-                <a href="namespaces/app-dice.html" class="">Dice</a>
-                
-            </li>
-                    <li>
                 <a href="namespaces/app-entity.html" class="">Entity</a>
                 
             </li>
@@ -202,6 +198,13 @@
 </dt>
 <dd>Calculate the total value of the hand.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/App-Card-Hand.html#method_replaceCard">replaceCard()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Replace a card in the hand with a new card.</dd>
+
     </dl>
 
 
@@ -318,7 +321,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Card/Hand.php"><a href="files/src-card-hand.html"><abbr title="src/Card/Hand.php">Hand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">41</span>
 
     </aside>
 
@@ -357,7 +360,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Card/Hand.php"><a href="files/src-card-hand.html"><abbr title="src/Card/Hand.php">Hand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">37</span>
+    <span class="phpdocumentor-element-found-in__line">51</span>
 
     </aside>
 
@@ -381,6 +384,64 @@
         <span class="phpdocumentor-signature__response_type">int</span>
             </section>
 
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_replaceCard">
+        replaceCard()
+        <a href="classes/App-Card-Hand.html#method_replaceCard" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Card/Hand.php"><a href="files/src-card-hand.html"><abbr title="src/Card/Hand.php">Hand.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">29</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Replace a card in the hand with a new card.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">replaceCard</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$index</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/App-Card-CardGraphic.html"><abbr title="\App\Card\CardGraphic">CardGraphic</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$newCard</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <section class="phpdocumentor-description"><p>If the card to replace is not found, it will be added instead.</p>
+</section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$index</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Index of the card to replace.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$newCard</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/App-Card-CardGraphic.html"><abbr title="\App\Card\CardGraphic">CardGraphic</abbr></a></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The new card to place in the hand.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
+
+    
 </article>
             </section>
 
@@ -505,6 +566,7 @@
                                             <li class=""><a href="classes/App-Card-Hand.html#method_addCard">addCard()</a></li>
                                             <li class=""><a href="classes/App-Card-Hand.html#method_getCards">getCards()</a></li>
                                             <li class=""><a href="classes/App-Card-Hand.html#method_getValue">getValue()</a></li>
+                                            <li class=""><a href="classes/App-Card-Hand.html#method_replaceCard">replaceCard()</a></li>
                                     </ul>
             </li>
                     </ul>
