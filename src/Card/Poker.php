@@ -166,6 +166,10 @@ class Poker
         return $evaluator->evaluate($player->getHand());
     }
 
+    /**
+     * Compares the hands of each player and returns with the winner.
+     * @return Player
+     */
     public function getWinner(): Player
     {
         $evaluator = new HandEvaluator([
@@ -220,16 +224,31 @@ class Poker
         return $bestPlayer;
     }
 
+    /**
+     * Add an amount to the pot.
+     * @param int $amount
+     */
     public function addToPot(int $amount): void
     {
         $this->pot += $amount;
     }
 
+    /**
+     * Get the current pot amount.
+     * 
+     * @return int
+     */
     public function getPot(): int
     {
         return $this->pot;
     }
 
+    /**
+     * Place a bet for a player.
+     * 
+     * @param Player $player
+     * @param int $amount
+     */
     public function placeBet(Player $player, int $amount): void
     {
         $player->bet($amount);
@@ -286,16 +305,31 @@ class Poker
         return $bets;
     }
 
+    /**
+     * Get the current stage of the game.
+     * 
+     * @return string
+     */
     public function getStage(): string
     {
         return $this->stage;
     }
 
+    /**
+     * Set the current stage of the game.
+     * 
+     * @param string $stage
+     */
     public function setStage(string $stage): void
     {
         $this->stage = $stage;
     }
 
+    /**
+     * Check if all players have full hands (5 cards).
+     * 
+     * @return bool
+     */
     public function fullHands(): bool
     {
         foreach ($this->players as $player) {
